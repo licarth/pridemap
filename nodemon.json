@@ -1,0 +1,5 @@
+{
+  "watch": ["map-generation/*"],
+  "ext": "js",
+  "exec": "node map-generation/generateMap.js"
+}
