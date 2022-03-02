@@ -1,41 +1,87 @@
+import { useState } from "react";
 import SVG from "react-inlinesvg";
+import { Circle, MapContainer, SVGOverlay, Tooltip } from "react-leaflet";
 import styled from "styled-components";
-import { Cities } from "./cities";
-import { map, onlyCities, onlyCountries } from "./computeMapSvg";
+import useGoogleSheets from "use-google-sheets";
+import { circles } from "./circles";
+import { onlyCountries } from "./computeMapSvg";
+import { getColorFromLatitude } from "./getColorFromLatitude";
 
-const getXYFromLatLng = ({ point }) => {
-  const { height, width } = map.image;
-
-  const originX = `max(0px, calc(0.5 * (100vh * ${width} / ${height} - 100vw)))`;
-  const originY = `max(0px, calc(0.5 * (100vw * ${height} / ${width} - 100vh)))`;
-
-  const $x = `calc(max(100vw * ${point[0]} / ${width}, 100vh * ${point[0]} / ${height}) - ${originX})`;
-  const $y = `calc(max(100vw * ${point[1]} / ${width}, 100vh * ${point[1]} / ${height}) - ${originY})`;
-
-  return { $x, $y };
-};
+const getXYFromLatLng = ({ point }) => {};
 
 const Map = () => {
-  const latLng = getXYFromLatLng({
-    point: Cities.find(([name]) => name === "Paris")[1],
+  const position = [51.505, 8];
+  const southWest = [32.774744, -13.36162];
+  const northEast = [67.191439, 51.632437];
+  const bounds = [southWest, northEast];
+
+  const [displayCities, setDisplayCities] = useState(false);
+
+  const { data, loading, error } = useGoogleSheets({
+    // apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    sheetId: "1P7xHRf4C7Gh6HBc1FdJbdxO73UqgM-_TbAm6341SutI",
   });
+
+  const zoom = 5;
+
   return (
     <FlexBody>
       <CenterColumn>
-        <MapContainer>
-          <Layers>
+        <StyledMapContainer
+          center={position}
+          zoom={zoom}
+          minZoom={zoom}
+          maxZoom={zoom}
+          zoomControl={false}
+        >
+          <SVGOverlay attributes={{}} bounds={bounds}>
             <Layer
               src={`data:image/svg+xml;utf8,${encodeURIComponent(
                 onlyCountries
               )}`}
             />
-            <Layer
-              src={`data:image/svg+xml;utf8,${encodeURIComponent(onlyCities)}`}
+            {circles.map((c) => (
+              <>
+                <SVGOverlay attributes={{}} bounds={[c, c]}>
+                  <svg viewBox="0 0 100 100">
+                    <text fill="white" x={c.lng} y={c.lat} class="small">
+                      TOTO
+                    </text>
+                  </svg>
+                </SVGOverlay>
+              </>
+            ))}
+          </SVGOverlay>
+          {circles.map((c) => {
+            const color = getColorFromLatitude(c.lat);
+            return (
+              <>
+                <Circle
+                  center={{ lat: c.lat, lng: c.lng }}
+                  radius={20000}
+                  color={color}
+                  fillColor={color}
+                  fill="true"
+                  fillOpacity="1"
+                >
+                  {" "}
+                  <Tooltip>toto</Tooltip>
+                </Circle>
+              </>
+            );
+          })}
+        </StyledMapContainer>
+        <ListContainer>
+          <label for="display-cities">
+            <input
+              type="checkbox"
+              id="display-cities"
+              checked={displayCities}
+              onChange={(e) => setDisplayCities(e.target.checked)}
             />
-            <TextNearPoint {...latLng}>Paris</TextNearPoint>
-          </Layers>
-        </MapContainer>
-        <ListContainer>Hello list</ListContainer>
+            Display Cities
+          </label>
+        </ListContainer>
       </CenterColumn>
     </FlexBody>
   );
@@ -64,11 +110,14 @@ const TextNearPoint = styled.span`
   color: white;
 `;
 
-const MapContainer = styled.div`
+const StyledMapContainer = styled(MapContainer)`
   padding: 0;
   margin: 0;
   width: 80vw;
+  height: 100%;
   overflow: scroll;
+  outline: 0;
+  background-color: rgba(255, 0, 0, 0);
 `;
 
 const Layers = styled.div`
@@ -84,7 +133,8 @@ const ListContainer = styled.div`
   height: 100%;
   width: 300px;
   min-width: 100px;
-  background-color: #1b0025;
+  background-color: #020300;
+  padding: 20 px;
   color: white;
 `;
 
