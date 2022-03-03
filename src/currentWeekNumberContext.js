@@ -5,9 +5,9 @@ import {
   default as React,
   useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
-import { useMemo } from "react/cjs/react.development";
 import useGoogleSheets from "use-google-sheets";
 import { map } from "./computeMapSvg";
 
