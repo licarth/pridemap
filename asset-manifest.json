@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pridemap/static/css/main.ab94b230.css",
+    "main.js": "/pridemap/static/js/main.0ffb6787.js",
+    "static/js/787.799eadb0.chunk.js": "/pridemap/static/js/787.799eadb0.chunk.js",
+    "index.html": "/pridemap/index.html",
+    "main.ab94b230.css.map": "/pridemap/static/css/main.ab94b230.css.map",
+    "main.0ffb6787.js.map": "/pridemap/static/js/main.0ffb6787.js.map",
+    "787.799eadb0.chunk.js.map": "/pridemap/static/js/787.799eadb0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ab94b230.css",
+    "static/js/main.0ffb6787.js"
+  ]
+}
