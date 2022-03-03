@@ -28,8 +28,8 @@ export const PrideSelectContextProvider = ({ children }) => {
       !loading &&
       !error &&
       data[0].data.slice(1).flatMap((p) => {
-        const lat = Number(p.lat);
-        const lng = Number(p.lng);
+        const lat = Number(p.Latitude);
+        const lng = Number(p.Longitude);
         const weekendNumber = Number(p.weekendNumber);
         if (lat === NaN || (lng === NaN) | !weekendNumber) {
           return [];
