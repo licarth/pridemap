@@ -3,11 +3,11 @@ const { getMapJSON } = require("dotted-map");
 
 // Or in the browser: import DottedMap from 'dotted-map';
 
-const southWest = [32.774744, -13.36162];
-const northEast = [67.191439, 51.632437];
+const southWest = [15, -10];
+const northEast = [75, 51];
 
 const mapJsonString = getMapJSON({
-  height: 50,
+  height: 120,
   grid: "diagonal",
   region: {
     lat: { min: southWest[0], max: northEast[0] },
@@ -15,3 +15,10 @@ const mapJsonString = getMapJSON({
   },
 });
 fs.writeFileSync("./src/map.json", mapJsonString);
+fs.writeFileSync(
+  "./src/mapBoundaries.js",
+  ` // This file is auto-generated, please do not edit it.
+export const southWest = ${JSON.stringify(southWest)};
+export const northEast = ${JSON.stringify(northEast)};
+`
+);
