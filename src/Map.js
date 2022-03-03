@@ -226,11 +226,11 @@ const TooltipElement = styled(Tooltip)`
     left: 0;
     border-color: rgba(0, 0, 0, 0);
   }
-  transform: translateY(-50px);
   font-size: large;
   font-weight: bold;
   padding: 4px;
   padding-left: 10px;
+  padding-right: 10px;
   background-color: rgba(0, 0, 0, 0);
   border: 0px solid #000;
   color: white;
