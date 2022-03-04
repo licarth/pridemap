@@ -19,7 +19,7 @@ export const PrideSelectContextProvider = ({ children }) => {
   const [weekendNumber, setWeekendNumber] = useState(24);
 
   const { data, loading, error } = useGoogleSheets({
-    apiKey: "AIzaSyCeiBtyqhe6W8-vgjBQ-MxHDFZC9ps8l04",
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
     sheetId: "1P7xHRf4C7Gh6HBc1FdJbdxO73UqgM-_TbAm6341SutI",
   });
 
