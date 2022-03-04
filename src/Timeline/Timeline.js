@@ -11,6 +11,7 @@ import { usePrideSelect } from "../currentWeekNumberContext";
 import { formatWeekend } from "../formatWeekend";
 import "./styles.css";
 import _ from "lodash";
+import styled from "styled-components";
 
 export const Timeline = ({ pridesPerWeekendNumber }) => {
   const {
@@ -33,41 +34,60 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
   return (
     <>
       {pridesPerWeekendNumber && (
-        <Swiper
-          onSlideChange={(swiper) => {
-            console.log("slide change");
-            return setWeekendNumber(array[swiper.realIndex]);
-          }}
-          onSliderMove={(swiper, e) => {
-            console.log("slide move: " + e.target);
-          }}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-          effect="coverflow"
-          grabCursor={true}
-          onSwiper={setSwiper}
-          slidesPerView={3}
-          spaceBetween={30}
-          modules={[EffectCoverflow]}
-          slideToClickedSlide
-          pagination={{
-            clickable: true,
-          }}
-          centeredSlides={true}
-          className="mySwiper"
-        >
-          {array.map((weekendNumber) => (
-            <SwiperSlide key={weekendNumber}>
-              {formatWeekend(weekendNumber)}
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <>
+          <FadeDiv />
+          <Swiper
+            onSlideChange={(swiper) => {
+              console.log("slide change");
+              return setWeekendNumber(array[swiper.realIndex]);
+            }}
+            onSliderMove={(swiper, e) => {
+              console.log("slide move: " + e.target);
+            }}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            effect="coverflow"
+            grabCursor={true}
+            onSwiper={setSwiper}
+            slidesPerView={3}
+            spaceBetween={30}
+            modules={[EffectCoverflow]}
+            slideToClickedSlide
+            pagination={{
+              clickable: true,
+            }}
+            centeredSlides={true}
+            className="mySwiper"
+          >
+            {array.map((weekendNumber) => (
+              <SwiperSlide key={weekendNumber}>
+                {formatWeekend(weekendNumber)}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </>
       )}
     </>
   );
 };
+
+const FadeDiv = styled.div`
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 10%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 90%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  pointer-events: none;
+`;

@@ -12,6 +12,7 @@ import { getColorFromLatitude } from "./getColorFromLatitude";
 import { northEast, southWest } from "./mapBoundaries";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { Timeline } from "./Timeline/Timeline";
+import * as turf from "@turf/turf";
 
 const Map = () => {
   const bounds = [southWest, northEast];
@@ -38,10 +39,18 @@ const Map = () => {
     return <div>Loading</div>;
   }
 
-  const p = currentlySelectedPrides[0];
-  const center = p ? [p.pin.lat, p.pin.lng] : [51.505, 8];
-
-  console.log(center);
+  const DEFAULT_CENTER = [51.505, 8];
+  const center =
+    currentlySelectedPrides?.length > 0
+      ? turf.centerOfMass(
+          turf.points(
+            currentlySelectedPrides.map(({ pin }) => {
+              console.log("pin: " + JSON.stringify(pin));
+              return [pin.lat, pin.lng];
+            })
+          )
+        )?.geometry?.coordinates
+      : DEFAULT_CENTER;
 
   return (
     <FlexBody>
@@ -151,16 +160,7 @@ const StyledMapContainer = styled(MapContainer)`
   background-color: rgba(255, 0, 0, 0);
 `;
 
-const Label = styled.div`
-  max-width: 100px;
-  transform: rotate(-70deg) translateX(-30px);
-`;
-
 const SliderContainer = styled.div`
-  &:before {
-    opacity: 0.7;
-  }
-
   position: absolute;
 
   @media (max-width: 480px) {
@@ -191,9 +191,9 @@ const SliderContainer = styled.div`
   height: 80px;
   z-index: 1000;
   padding: 10px;
-  background-color: #020300;
   border-radius: 20px;
   color: white;
+  background-color: black;
 `;
 
 const FlexBody = styled.div`
@@ -243,6 +243,8 @@ const TooltipElement = styled(Tooltip)`
   color: white;
   white-space: nowrap;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
 `;
 
 export default Map;
