@@ -66,18 +66,6 @@ const Map = () => {
           <Layer
             src={`data:image/svg+xml;utf8,${encodeURIComponent(onlyCountries)}`}
           />
-          {prides &&
-            prides.map(({ pin }) => (
-              <>
-                <SVGOverlay attributes={{}} bounds={[pin, pin]}>
-                  <svg viewBox="0 0 100 100">
-                    <text fill="white" x={pin.lng} y={pin.lat} class="small">
-                      TOTO
-                    </text>
-                  </svg>
-                </SVGOverlay>
-              </>
-            ))}
         </SVGOverlay>
         {prides &&
           prides.map(

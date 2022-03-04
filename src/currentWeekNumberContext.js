@@ -5,6 +5,7 @@ import {
   default as React,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -16,7 +17,7 @@ export const PrideSelectContext = createContext({
 });
 
 export const PrideSelectContextProvider = ({ children }) => {
-  const [weekendNumber, setWeekendNumber] = useState(24);
+  const [weekendNumber, setWeekendNumber] = useState();
 
   const { data, loading, error } = useGoogleSheets({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -67,6 +68,11 @@ export const PrideSelectContextProvider = ({ children }) => {
   const minWeekendNumber = prides
     ? Math.min(...prides.map((p) => p.weekendNumber))
     : null;
+
+  useEffect(
+    () => setWeekendNumber(minWeekendNumber),
+    [setWeekendNumber, loading]
+  );
 
   const nextWeekend = useCallback(
     () => setWeekendNumber((w) => Math.min(w + 1, maxWeekendNumber)),
