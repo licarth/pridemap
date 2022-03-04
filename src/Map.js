@@ -1,8 +1,6 @@
 import { format } from "date-fns";
-import { addWeeks, endOfWeek, format as formatFp } from "date-fns/fp";
 import { fr } from "date-fns/locale";
 import _ from "lodash";
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
 import SVG from "react-inlinesvg";
@@ -12,26 +10,18 @@ import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { getColorFromLatitude } from "./getColorFromLatitude";
 import { northEast, southWest } from "./mapBoundaries";
-import { formatWeekend } from "./formatWeekend";
 import { SetCenterOnChange } from "./SetCenterOnChange";
+import { Timeline } from "./Timeline/Timeline";
 
 const Map = () => {
   const bounds = [southWest, northEast];
 
   const { loading, prides, weekendNumber, setWeekendNumber } = usePrideSelect();
 
-  const { marks } = useMemo(() => {
-    const marks = _(prides)
-      .groupBy("weekendNumber")
-      .mapValues((v, weekendNumber) => (
-        <Label>{formatWeekend(weekendNumber)}</Label>
-      ))
-      .value();
-
-    return {
-      marks,
-    };
-  }, [prides]);
+  const pridesPerWeekendNumber = useMemo(
+    () => _(prides).groupBy("weekendNumber").value(),
+    [prides]
+  );
 
   const currentlySelectedPrides = useMemo(
     () =>
@@ -48,7 +38,6 @@ const Map = () => {
     return <div>Loading</div>;
   }
 
-  const markKeys = Object.keys(marks).map(Number);
   const p = currentlySelectedPrides[0];
   const center = p ? [p.pin.lat, p.pin.lng] : [51.505, 8];
 
@@ -60,9 +49,10 @@ const Map = () => {
         keyboard={false}
         center={center}
         zoom={zoom}
-        minZoom={zoom - 1}
+        minZoom={zoom}
         maxZoom={zoom}
-        zoomControl={true}
+        zoomControl={false}
+        dragging={false}
         maxBounds={bounds}
       >
         <SetCenterOnChange coords={center} />
@@ -127,18 +117,11 @@ const Map = () => {
             </PrideDetails>
           ))}
       </RightColumn>
-      {prides && (
+      {
         <SliderContainer>
-          <Slider
-            min={_.min(markKeys)}
-            max={_.max(markKeys)}
-            value={weekendNumber}
-            marks={marks}
-            step={1}
-            onChange={(weekendNumber) => setWeekendNumber(weekendNumber)}
-          />
+          <Timeline pridesPerWeekendNumber={pridesPerWeekendNumber} />
         </SliderContainer>
-      )}
+      }
     </FlexBody>
   );
 };
@@ -170,7 +153,6 @@ const StyledMapContainer = styled(MapContainer)`
 
 const Label = styled.div`
   max-width: 100px;
-  color: white;
   transform: rotate(-70deg) translateX(-30px);
 `;
 
@@ -180,13 +162,36 @@ const SliderContainer = styled.div`
   }
 
   position: absolute;
-  width: 80vw;
+
+  @media (max-width: 480px) {
+    & {
+      width: 300px;
+    }
+  }
+
+  @media (min-width: 480px) {
+    & {
+      width: 400px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    & {
+      width: 500px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    & {
+      width: 900px;
+    }
+  }
+
   bottom: 0px;
   height: 80px;
   z-index: 1000;
+  padding: 10px;
   background-color: #020300;
-  padding: 20px;
-  margin: 30px;
   border-radius: 20px;
   color: white;
 `;
@@ -194,7 +199,7 @@ const SliderContainer = styled.div`
 const FlexBody = styled.div`
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   background-color: #020300;
 `;
@@ -206,16 +211,18 @@ const RightColumn = styled.div`
   z-index: 1000;
   background-color: #020300;
   padding: 20px;
-  margin: 30px;
+  margin: 3px;
   border-radius: 20px;
   color: white;
+  max-height: 30vh;
+  overflow-y: scroll;
 `;
 
 const PrideDetails = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const City = styled.h2``;
+const City = styled.h3``;
 const ParadeDate = styled.div``;
 const TooltipElement = styled(Tooltip)`
   &:before {

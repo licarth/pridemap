@@ -84,6 +84,8 @@ export const PrideSelectContextProvider = ({ children }) => {
   return (
     <PrideSelectContext.Provider
       value={{
+        maxWeekendNumber,
+        minWeekendNumber,
         weekendNumber,
         nextWeekend,
         previousWeekend,
