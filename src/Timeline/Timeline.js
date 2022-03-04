@@ -81,7 +81,6 @@ const FadeDiv = styled.div`
     rgba(0, 0, 0, 1) 100%
   );
   width: 100%;
-  height: 100%;
   z-index: 100;
   pointer-events: none;
 `;

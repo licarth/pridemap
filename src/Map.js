@@ -107,16 +107,16 @@ const Map = () => {
             .entries()
             .sortBy(([a]) => a)
             .map(([paradeStartDate, prides]) => (
-              <>
-                <City>
+              <PrideBlock>
+                <DayHeading>
                   {prides[0]?.paradeStartDate
                     ? format(prides[0].paradeStartDate, "EEE, MMMM do")
                     : "To be announced"}
-                </City>
+                </DayHeading>
                 {prides.map(({ city }) => (
-                  <PrideDetails key={city}>{city}</PrideDetails>
+                  <CityName key={city}>{city}</CityName>
                 ))}
-              </>
+              </PrideBlock>
             ))
             .value()}
       </RightColumn>
@@ -200,24 +200,26 @@ const FlexBody = styled.div`
 
 const RightColumn = styled.div`
   position: absolute;
-  right: 0;
-  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  width: 40em;
+  max-width: 95vw;
   z-index: 1000;
-  background-color: #020300;
   padding: 20px;
   margin: 3px;
   border-radius: 20px;
   color: white;
   max-height: 30vh;
-  overflow-y: scroll;
+  overflow: scroll;
+  background: rgba(2, 3, 0, 0.7);
 `;
 
-const PrideDetails = styled.div`
+const CityName = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const City = styled.h3``;
-const ParadeDate = styled.div``;
+const DayHeading = styled.h3``;
+const PrideBlock = styled.div``;
 const TooltipElement = styled(Tooltip)`
   &:before {
     right: 0;
