@@ -1,4 +1,4 @@
-import { parse } from "date-fns";
+import { isValid, parse } from "date-fns";
 import "rc-slider/assets/index.css";
 import {
   createContext,
@@ -35,11 +35,12 @@ export const PrideSelectContextProvider = ({ children }) => {
           return [];
         }
 
-        const parseDate = (string) => {
+        const parseDate = (string, defaultValue) => {
           try {
-            return parse(string, "dd/MM", new Date(2022, 1));
+            const newLocal = parse(string, "dd/MM", new Date(2022, 1));
+            return isValid(newLocal) ? newLocal : defaultValue;
           } catch {
-            return undefined;
+            return defaultValue;
           }
         };
         return [
@@ -66,10 +67,6 @@ export const PrideSelectContextProvider = ({ children }) => {
   const minWeekendNumber = prides
     ? Math.min(...prides.map((p) => p.weekendNumber))
     : null;
-
-  console.log(`weekendNumber: ${weekendNumber}`);
-  console.log(`maxWeekendNumber: ${maxWeekendNumber}`);
-  console.log(`minWeekendNumber: ${minWeekendNumber}`);
 
   const nextWeekend = useCallback(
     () => setWeekendNumber((w) => Math.min(w + 1, maxWeekendNumber)),

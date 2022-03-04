@@ -20,14 +20,12 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
     minWeekendNumber,
     maxWeekendNumber,
   } = usePrideSelect();
-  console.log("init timeline" + weekendNumber);
   const [swiper, setSwiper] = useState();
 
   const array = _.range(minWeekendNumber, maxWeekendNumber + 1).map(Number);
 
   useMemo(() => {
     const slildeNumber = array.findIndex((n) => n === weekendNumber);
-    console.log(`going to slide ${slildeNumber}`);
     swiper && slildeNumber !== -1 && swiper.slideTo(slildeNumber);
   }, [array, weekendNumber]);
 
@@ -38,11 +36,7 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
           <FadeDiv />
           <Swiper
             onSlideChange={(swiper) => {
-              console.log("slide change");
               return setWeekendNumber(array[swiper.realIndex]);
-            }}
-            onSliderMove={(swiper, e) => {
-              console.log("slide move: " + e.target);
             }}
             coverflowEffect={{
               rotate: 0,

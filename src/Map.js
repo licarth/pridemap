@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, getDay, getISODay } from "date-fns";
 import { fr } from "date-fns/locale";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
@@ -44,10 +44,7 @@ const Map = () => {
     currentlySelectedPrides?.length > 0
       ? turf.centerOfMass(
           turf.points(
-            currentlySelectedPrides.map(({ pin }) => {
-              console.log("pin: " + JSON.stringify(pin));
-              return [pin.lat, pin.lng];
-            })
+            currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng])
           )
         )?.geometry?.coordinates
       : DEFAULT_CENTER;
@@ -116,15 +113,24 @@ const Map = () => {
       </StyledMapContainer>
       <RightColumn>
         {currentlySelectedPrides &&
-          currentlySelectedPrides.map(({ city, paradeStartDate }) => (
-            <PrideDetails key={city}>
-              <City>{city}</City>
-              <ParadeDate>
-                {paradeStartDate &&
-                  format(paradeStartDate, "EEE d MMMM", { locale: fr })}
-              </ParadeDate>
-            </PrideDetails>
-          ))}
+          _(currentlySelectedPrides)
+            .groupBy(({ paradeStartDate }) => getDay(paradeStartDate))
+            .mapKeys((v, i) => (i === "0" ? "7" : i))
+            .entries()
+            .sortBy(([a]) => a)
+            .map(([paradeStartDate, prides]) => (
+              <>
+                <City>
+                  {prides[0]?.paradeStartDate
+                    ? format(prides[0].paradeStartDate, "EEE, MMMM do")
+                    : "To be announced"}
+                </City>
+                {prides.map(({ city }) => (
+                  <PrideDetails key={city}>{city}</PrideDetails>
+                ))}
+              </>
+            ))
+            .value()}
       </RightColumn>
       {
         <SliderContainer>
