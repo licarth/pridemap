@@ -18,6 +18,7 @@ export const PrideSelectContext = createContext({
 
 export const PrideSelectContextProvider = ({ children }) => {
   const [weekendNumber, setWeekendNumber] = useState();
+  const [previewedWeekendNumber, setPreviewedWeekendNumber] = useState();
 
   const { data, loading, error } = useGoogleSheets({
     apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
@@ -32,7 +33,7 @@ export const PrideSelectContextProvider = ({ children }) => {
         const lat = Number(p.Latitude);
         const lng = Number(p.Longitude);
         const weekendNumber = Number(p.weekendNumber);
-        if (lat === NaN || (lng === NaN) | !weekendNumber) {
+        if (isNaN(lat) || isNaN(lng) | !weekendNumber) {
           return [];
         }
 
@@ -71,7 +72,7 @@ export const PrideSelectContextProvider = ({ children }) => {
 
   useEffect(
     () => setWeekendNumber(minWeekendNumber),
-    [setWeekendNumber, loading]
+    [setWeekendNumber, loading, minWeekendNumber]
   );
 
   const nextWeekend = useCallback(
@@ -93,6 +94,8 @@ export const PrideSelectContextProvider = ({ children }) => {
         nextWeekend,
         previousWeekend,
         setWeekendNumber,
+        previewedWeekendNumber,
+        setPreviewedWeekendNumber,
         prides,
         loading,
         error,

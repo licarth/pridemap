@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { EffectCoverflow } from "swiper";
+import React, { useEffect, useMemo, useState } from "react";
+import { EffectCoverflow, FreeMode } from "swiper";
 import "swiper/css";
 // Import Swiper styles
 import "swiper/css/bundle";
@@ -17,17 +17,25 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
   const {
     weekendNumber,
     setWeekendNumber,
+    // setPreviewedWeekendNumber,
     minWeekendNumber,
     maxWeekendNumber,
   } = usePrideSelect();
   const [swiper, setSwiper] = useState();
 
-  const array = _.range(minWeekendNumber, maxWeekendNumber + 1).map(Number);
+  const [previewMode, setPreviewMode] = useState(false);
 
-  useMemo(() => {
-    const slildeNumber = array.findIndex((n) => n === weekendNumber);
-    swiper && slildeNumber !== -1 && swiper.slideTo(slildeNumber);
-  }, [array, weekendNumber]);
+  const array = useMemo(
+    () => _.range(minWeekendNumber, maxWeekendNumber + 1).map(Number),
+    [minWeekendNumber, maxWeekendNumber]
+  );
+
+  useEffect(() => {
+    if (!previewMode) {
+      const slildeNumber = array.findIndex((n) => n === weekendNumber);
+      swiper && slildeNumber !== -1 && swiper.slideTo(slildeNumber);
+    }
+  }, [swiper, array, weekendNumber, previewMode]);
 
   return (
     <>
@@ -36,8 +44,16 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
           <FadeDiv />
           <Swiper
             onSlideChange={(swiper) => {
-              return setWeekendNumber(array[swiper.realIndex]);
+              setWeekendNumber(array[swiper.realIndex]);
             }}
+            onTransitionEnd={(swiper) => {
+              console.log("Animation end");
+              setPreviewMode(false);
+            }}
+            onTouchStart={(swiper) => {
+              setPreviewMode(true);
+            }}
+            freeMode
             coverflowEffect={{
               rotate: 0,
               stretch: 0,
@@ -49,8 +65,8 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
             grabCursor={true}
             onSwiper={setSwiper}
             slidesPerView={3}
-            spaceBetween={30}
-            modules={[EffectCoverflow]}
+            spaceBetween={0}
+            modules={[FreeMode, EffectCoverflow]}
             slideToClickedSlide
             pagination={{
               clickable: true,
@@ -60,7 +76,7 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
           >
             {array.map((weekendNumber) => (
               <SwiperSlide key={weekendNumber}>
-                {formatWeekend(weekendNumber)}
+                <DateBox>{formatWeekend(weekendNumber)}</DateBox>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -69,6 +85,16 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
     </>
   );
 };
+
+const DateBox = styled.div`
+  border: solid 1px white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  height: 100%;
+`;
 
 const FadeDiv = styled.div`
   position: absolute;

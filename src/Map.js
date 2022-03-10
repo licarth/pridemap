@@ -1,5 +1,5 @@
-import { format, getDay, getISODay } from "date-fns";
-import { fr } from "date-fns/locale";
+import * as turf from "@turf/turf";
+import { format, getDay } from "date-fns";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
@@ -12,12 +12,14 @@ import { getColorFromLatitude } from "./getColorFromLatitude";
 import { northEast, southWest } from "./mapBoundaries";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { Timeline } from "./Timeline/Timeline";
-import * as turf from "@turf/turf";
 
 const Map = () => {
   const bounds = [southWest, northEast];
 
-  const { loading, prides, weekendNumber, setWeekendNumber } = usePrideSelect();
+  const { loading, prides, weekendNumber, previewedWeekendNumber } =
+    usePrideSelect();
+
+  const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
 
   const pridesPerWeekendNumber = useMemo(
     () => _(prides).groupBy("weekendNumber").value(),
@@ -26,14 +28,12 @@ const Map = () => {
 
   const currentlySelectedPrides = useMemo(
     () =>
-      prides && prides.filter(({ weekendNumber: w }) => w === weekendNumber),
-    [weekendNumber, prides]
+      prides &&
+      prides.filter(({ weekendNumber: w }) => w === thisWeekendNumber),
+    [thisWeekendNumber, prides]
   );
 
-  const zoom = useMemo(
-    () => (window.innerWidth < 1000 ? 4 : 5),
-    [window.innerWidth]
-  );
+  const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 5), []);
 
   if (loading) {
     return <div>Loading</div>;
@@ -75,19 +75,20 @@ const Map = () => {
               weekendNumber: currentWeekendNumber,
             }) => {
               const color = getColorFromLatitude(lat);
-              const currentlySelected = weekendNumber === currentWeekendNumber;
+              const currentlySelected =
+                thisWeekendNumber === currentWeekendNumber;
               return (
                 <>
                   <Circle
                     center={{ lat, lng }}
                     radius={20000}
-                    color={color}
-                    fillColor={color}
+                    color={color.strong}
+                    fillColor={color.main}
                     fill={true}
                     pathOptions={{
                       stroke: currentlySelected,
-                      fillOpacity: currentlySelected ? "1" : "0.6",
-                      weight: currentlySelected ? "5" : "1",
+                      fillOpacity: currentlySelected ? "1" : "1",
+                      // weight: currentlySelected ? "5" : "1",
                     }}
                   >
                     {currentlySelected && (

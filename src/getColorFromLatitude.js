@@ -5,14 +5,15 @@ const Colors = {
   GREEN: "#008018",
   BLUE: "#0000F9",
   PURPLE: "#86007D",
+  WHITE: "#ffffff",
 };
 const colorsArray = [
-  Colors.PURPLE,
-  Colors.BLUE,
-  Colors.GREEN,
-  Colors.YELLOW,
-  Colors.ORANGE,
-  Colors.RED,
+  { main: Colors.PURPLE, strong: Colors.WHITE },
+  { main: Colors.BLUE, strong: Colors.WHITE },
+  { main: Colors.GREEN, strong: Colors.WHITE },
+  { main: Colors.YELLOW, strong: Colors.WHITE },
+  { main: Colors.ORANGE, strong: Colors.WHITE },
+  { main: Colors.RED, strong: Colors.WHITE },
 ];
 
 const minLat = 36;
@@ -25,7 +26,7 @@ const maxLat = 60;
 
 export const getColorFromLatitude = (latitude) => {
   if (latitude > maxLat) {
-    return "white";
+    return { main: Colors.WHITE, strong: Colors.RED };
   }
 
   const colorsArrayIndex = Math.floor(
