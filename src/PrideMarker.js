@@ -54,20 +54,22 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           </TooltipElement>
         </CircleMarker>
       )}
-      <CircleMarker
-        key={`outermarker-${city}`}
-        center={{ lat, lng }}
-        radius={20}
-        eventHandlers={{
-          click: () => setWeekendNumber(markerWeekendNumber),
-        }}
-        pathOptions={{
-          stroke: false,
-          fillOpacity: 0.2,
-          fill: true,
-          fillColor: color.main,
-        }}
-      />
+      {!weekendNumber && (
+        <CircleMarker
+          key={`outermarker-${city}`}
+          center={{ lat, lng }}
+          radius={20}
+          eventHandlers={{
+            click: () => setWeekendNumber(markerWeekendNumber),
+          }}
+          pathOptions={{
+            stroke: false,
+            fillOpacity: 0.2,
+            fill: true,
+            fillColor: color.main,
+          }}
+        />
+      )}
     </>
   );
 };
