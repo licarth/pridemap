@@ -4,12 +4,13 @@ import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
 import SVG from "react-inlinesvg";
-import { Circle, MapContainer, SVGOverlay, Tooltip } from "react-leaflet";
+import { CircleMarker, MapContainer, SVGOverlay, Tooltip } from "react-leaflet";
 import styled from "styled-components";
 import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { getColorFromLatitude } from "./getColorFromLatitude";
 import { northEast, southWest } from "./mapBoundaries";
+import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { Timeline } from "./Timeline/Timeline";
 
@@ -33,7 +34,7 @@ const Map = () => {
     [thisWeekendNumber, prides]
   );
 
-  const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 5), []);
+  const zoom = useMemo(() => (window.innerWidth < 1000 ? 5 : 6), []);
 
   if (loading) {
     return <div>Loading</div>;
@@ -55,10 +56,10 @@ const Map = () => {
         keyboard={false}
         center={center}
         zoom={zoom}
-        minZoom={zoom}
+        minZoom={zoom - 2}
         maxZoom={zoom}
         zoomControl={false}
-        dragging={false}
+        dragging={true}
         maxBounds={bounds}
       >
         <SetCenterOnChange coords={center} />
@@ -68,37 +69,9 @@ const Map = () => {
           />
         </SVGOverlay>
         {prides &&
-          prides.map(
-            ({
-              pin: { lat, lng },
-              city,
-              weekendNumber: currentWeekendNumber,
-            }) => {
-              const color = getColorFromLatitude(lat);
-              const currentlySelected =
-                thisWeekendNumber === currentWeekendNumber;
-              return (
-                <>
-                  <Circle
-                    center={{ lat, lng }}
-                    radius={20000}
-                    color={color.strong}
-                    fillColor={color.main}
-                    fill={true}
-                    pathOptions={{
-                      stroke: currentlySelected,
-                      fillOpacity: currentlySelected ? "1" : "1",
-                      // weight: currentlySelected ? "5" : "1",
-                    }}
-                  >
-                    {currentlySelected && (
-                      <TooltipElement permanent>{city}</TooltipElement>
-                    )}
-                  </Circle>
-                </>
-              );
-            }
-          )}
+          prides.map((pride) => (
+            <PrideMarker weekendNumber={thisWeekendNumber} pride={pride} />
+          ))}
       </StyledMapContainer>
       <RightColumn>
         {currentlySelectedPrides &&
@@ -221,27 +194,5 @@ const CityName = styled.div`
 `;
 const DayHeading = styled.h3``;
 const PrideBlock = styled.div``;
-const TooltipElement = styled(Tooltip)`
-  &:before {
-    right: 0;
-    border-color: rgba(0, 0, 0, 0);
-  }
-  &:before {
-    left: 0;
-    border-color: rgba(0, 0, 0, 0);
-  }
-  font-size: large;
-  font-weight: bold;
-  padding: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: rgba(0, 0, 0, 0);
-  border: 0px solid #000;
-  color: white;
-  white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 5px;
-`;
 
 export default Map;
