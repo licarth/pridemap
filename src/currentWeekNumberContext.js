@@ -17,7 +17,8 @@ export const PrideSelectContext = createContext({
 });
 
 export const PrideSelectContextProvider = ({ children }) => {
-  const [weekendNumber, setWeekendNumber] = useState();
+  const [weekendNumber, setWeekendNumber] = useState(null);
+
   const [previewedWeekendNumber, setPreviewedWeekendNumber] = useState();
 
   const { data, loading, error } = useGoogleSheets({

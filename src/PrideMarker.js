@@ -29,9 +29,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           stroke: false,
           fillOpacity: weekendNumber && !currentlySelected ? 0.3 : 1,
         }}
-      >
-        {currentlySelected && <TooltipElement permanent>{city}</TooltipElement>}
-      </CircleMarker>
+      ></CircleMarker>
       {currentlySelected && (
         <CircleMarker
           key={`selected-marker-${city}`}
@@ -47,7 +45,11 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             fillColor: color.main,
             // weight: currentlySelected ? "5" : "1",
           }}
-        />
+        >
+          <TooltipElement permanent offset={[20, 0]}>
+            {city}
+          </TooltipElement>
+        </CircleMarker>
       )}
       <CircleMarker
         key={`outermarker-${city}`}
@@ -62,9 +64,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           fill: true,
           fillColor: color.main,
         }}
-      >
-        {currentlySelected && <TooltipElement permanent>{city}</TooltipElement>}
-      </CircleMarker>
+      />
     </>
   );
 };

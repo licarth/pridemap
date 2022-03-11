@@ -4,11 +4,10 @@ import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
 import SVG from "react-inlinesvg";
-import { CircleMarker, MapContainer, SVGOverlay, Tooltip } from "react-leaflet";
+import { MapContainer, SVGOverlay } from "react-leaflet";
 import styled from "styled-components";
 import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
-import { getColorFromLatitude } from "./getColorFromLatitude";
 import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
@@ -37,7 +36,7 @@ const Map = () => {
   const zoom = useMemo(() => (window.innerWidth < 1000 ? 5 : 6), []);
 
   if (loading) {
-    return <div>Loading</div>;
+    return <div>Loading...</div>;
   }
 
   const DEFAULT_CENTER = [51.505, 8];
