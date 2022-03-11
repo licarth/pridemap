@@ -71,11 +71,6 @@ export const PrideSelectContextProvider = ({ children }) => {
     ? Math.min(...prides.map((p) => p.weekendNumber))
     : null;
 
-  useEffect(
-    () => setWeekendNumber(minWeekendNumber),
-    [setWeekendNumber, loading, minWeekendNumber]
-  );
-
   const nextWeekend = useCallback(
     () =>
       setWeekendNumber((w) =>

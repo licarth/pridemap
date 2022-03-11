@@ -3,8 +3,8 @@ const { getMapJSON } = require("dotted-map");
 
 // Or in the browser: import DottedMap from 'dotted-map';
 
-const southWest = [0, -35];
-const northEast = [85, 80];
+const southWest = [20, -35];
+const northEast = [72, 80];
 
 const mapJsonString = getMapJSON({
   height: 170,

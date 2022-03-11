@@ -10,7 +10,7 @@ const Colors = {
   WHITE: "#ffffff",
 };
 
-const faded = (hexColor) => Color(hexColor).darken(0.8).hex();
+const faded = (hexColor) => Color(hexColor).darken(0.6).hex();
 const highlighted = (hexColor) => Color(hexColor).alpha(0.5).lighten(0.1).hex();
 
 const colorsArray = [

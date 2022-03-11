@@ -33,7 +33,7 @@ const Map = () => {
     [thisWeekendNumber, prides]
   );
 
-  const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 5), []);
+  const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 4), []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,7 +59,6 @@ const Map = () => {
         maxZoom={zoom + 1}
         zoomControl={false}
         dragging={true}
-        maxBounds={bounds}
       >
         <SetCenterOnChange coords={center} />
         <SVGOverlay attributes={{}} bounds={bounds}>
