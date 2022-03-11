@@ -27,14 +27,14 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         }}
         pathOptions={{
           stroke: false,
-          fillOpacity: 1,
+          fillOpacity: weekendNumber && !currentlySelected ? 0.3 : 1,
         }}
       >
         {currentlySelected && <TooltipElement permanent>{city}</TooltipElement>}
       </CircleMarker>
       {currentlySelected && (
         <CircleMarker
-          key={`selected-${city}`}
+          key={`selected-marker-${city}`}
           center={{ lat, lng }}
           radius={20}
           color={color.main}
@@ -50,7 +50,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         />
       )}
       <CircleMarker
-        key={city}
+        key={`outermarker-${city}`}
         center={{ lat, lng }}
         radius={20}
         eventHandlers={{
@@ -58,10 +58,9 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         }}
         pathOptions={{
           stroke: false,
-          fillOpacity: 0.3,
+          fillOpacity: 0.2,
           fill: true,
           fillColor: color.main,
-          // weight: currentlySelected ? "5" : "1",
         }}
       >
         {currentlySelected && <TooltipElement permanent>{city}</TooltipElement>}

@@ -88,7 +88,7 @@ const Map = () => {
                     : "To be announced"}
                 </DayHeading>
                 {prides.map(({ city }) => (
-                  <CityName key={city}>{city}</CityName>
+                  <CityName key={`citylabel-${city}`}>{city}</CityName>
                 ))}
               </PrideBlock>
             ))
