@@ -77,7 +77,10 @@ export const PrideSelectContextProvider = ({ children }) => {
   );
 
   const nextWeekend = useCallback(
-    () => setWeekendNumber((w) => Math.min(w + 1, maxWeekendNumber)),
+    () =>
+      setWeekendNumber((w) =>
+        w ? Math.min(w + 1, maxWeekendNumber) : minWeekendNumber
+      ),
     [setWeekendNumber, maxWeekendNumber]
   );
 

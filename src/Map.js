@@ -33,7 +33,7 @@ const Map = () => {
     [thisWeekendNumber, prides]
   );
 
-  const zoom = useMemo(() => (window.innerWidth < 1000 ? 5 : 6), []);
+  const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 5), []);
 
   if (loading) {
     return <div>Loading...</div>;

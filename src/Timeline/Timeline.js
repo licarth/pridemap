@@ -31,9 +31,12 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
   );
 
   useEffect(() => {
-    if (!previewMode) {
+    if (swiper && !previewMode) {
+      if (!weekendNumber) {
+        swiper.slideTo(0);
+      }
       const slildeNumber = array.findIndex((n) => n === weekendNumber);
-      swiper && slildeNumber !== -1 && swiper.slideTo(slildeNumber);
+      slildeNumber !== -1 && swiper.slideTo(slildeNumber + 1);
     }
   }, [swiper, array, weekendNumber, previewMode]);
 
@@ -44,7 +47,7 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
           <FadeDiv />
           <Swiper
             onSlideChange={(swiper) => {
-              setWeekendNumber(array[swiper.realIndex]);
+              setWeekendNumber(array[swiper.realIndex - 1]);
             }}
             onTransitionEnd={(swiper) => {
               console.log("Animation end");
@@ -74,9 +77,17 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
             centeredSlides={true}
             className="mySwiper"
           >
+            <SwiperSlide key={"slide-intro"}>
+              <SwipeBox>
+                <div>Swipe</div>
+                <div>▶︎</div>
+              </SwipeBox>
+            </SwiperSlide>
             {array.map((weekendNumber) => (
               <SwiperSlide key={weekendNumber}>
-                <DateBox>{formatWeekend(weekendNumber)}</DateBox>
+                <DateBox hasPrides={!!pridesPerWeekendNumber[weekendNumber]}>
+                  {formatWeekend(weekendNumber)}
+                </DateBox>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -86,12 +97,25 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
   );
 };
 
-const DateBox = styled.div`
+const SwipeBox = styled.div`
   border: solid 1px white;
   border-radius: 5px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 80%;
+  height: 100%;
+`;
+const DateBox = styled.div`
+  border: ${({ hasPrides }) =>
+    hasPrides ? "solid 1px white" : "dashed 1px black"};
+  border-radius: 5px;
+  color: ${({ hasPrides }) => (hasPrides ? "white" : "grey")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: ${({ hasPrides }) => (hasPrides ? "none" : "line-through")};
   width: 80%;
   height: 100%;
 `;

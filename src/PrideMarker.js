@@ -19,15 +19,19 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         key={city}
         center={{ lat, lng }}
         radius={8}
-        color={color.strong}
         fillColor={color.main}
-        fill={true}
         eventHandlers={{
           click: () => setWeekendNumber(markerWeekendNumber),
         }}
         pathOptions={{
+          fillColor: !!weekendNumber
+            ? currentlySelected
+              ? color.highlighted
+              : color.faded
+            : color.main,
+          fill: true,
+          fillOpacity: 1,
           stroke: false,
-          fillOpacity: weekendNumber && !currentlySelected ? 0.3 : 1,
         }}
       ></CircleMarker>
       {currentlySelected && (
@@ -35,14 +39,13 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           key={`selected-marker-${city}`}
           center={{ lat, lng }}
           radius={20}
-          color={color.main}
+          color={color.highlighted}
           eventHandlers={{
             click: () => setWeekendNumber(markerWeekendNumber),
           }}
           pathOptions={{
             fillOpacity: 0.01,
             fill: true,
-            fillColor: color.main,
             // weight: currentlySelected ? "5" : "1",
           }}
         >
