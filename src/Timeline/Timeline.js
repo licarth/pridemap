@@ -15,6 +15,7 @@ import styled from "styled-components";
 
 export const Timeline = ({ pridesPerWeekendNumber }) => {
   const {
+    mode,
     weekendNumber,
     setWeekendNumber,
     // setPreviewedWeekendNumber,
@@ -30,15 +31,17 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
     [minWeekendNumber, maxWeekendNumber]
   );
 
+  console.log(weekendNumber);
+
   useEffect(() => {
     if (swiper && !previewMode) {
-      if (!weekendNumber) {
+      if (!weekendNumber || mode !== "weekend") {
         swiper.slideTo(0);
       }
       const slildeNumber = array.findIndex((n) => n === weekendNumber);
       slildeNumber !== -1 && swiper.slideTo(slildeNumber + 1);
     }
-  }, [swiper, array, weekendNumber, previewMode]);
+  }, [swiper, array, weekendNumber, previewMode, mode]);
 
   return (
     <>

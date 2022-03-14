@@ -16,8 +16,14 @@ import { Timeline } from "./Timeline/Timeline";
 const Map = () => {
   const bounds = [southWest, northEast];
 
-  const { loading, prides, weekendNumber, previewedWeekendNumber } =
-    usePrideSelect();
+  const {
+    loading,
+    prides,
+    weekendNumber,
+    previewedWeekendNumber,
+    mode,
+    selectedPride,
+  } = usePrideSelect();
 
   const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
 
@@ -41,12 +47,16 @@ const Map = () => {
 
   const DEFAULT_CENTER = [51.505, 8];
   const center =
-    currentlySelectedPrides?.length > 0
-      ? turf.centerOfMass(
-          turf.points(
-            currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng])
-          )
-        )?.geometry?.coordinates
+    mode === "weekend"
+      ? currentlySelectedPrides?.length > 0
+        ? turf.centerOfMass(
+            turf.points(
+              currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng])
+            )
+          )?.geometry?.coordinates
+        : DEFAULT_CENTER
+      : mode === "city"
+      ? selectedPride?.pin || DEFAULT_CENTER
       : DEFAULT_CENTER;
 
   return (
@@ -72,7 +82,8 @@ const Map = () => {
           ))}
       </StyledMapContainer>
       <RightColumn>
-        {currentlySelectedPrides &&
+        {mode === "weekend" &&
+          currentlySelectedPrides &&
           _(currentlySelectedPrides)
             .groupBy(({ paradeStartDate }) => getDay(paradeStartDate))
             .mapKeys((v, i) => (i === "0" ? "7" : i))
@@ -91,10 +102,13 @@ const Map = () => {
               </PrideBlock>
             ))
             .value()}
+        {mode === "city" && <div>{selectedPride?.city}</div>}
       </RightColumn>
       {
         <SliderContainer>
-          <Timeline pridesPerWeekendNumber={pridesPerWeekendNumber} />
+          {mode === "city" || (
+            <Timeline pridesPerWeekendNumber={pridesPerWeekendNumber} />
+          )}
         </SliderContainer>
       }
     </FlexBody>

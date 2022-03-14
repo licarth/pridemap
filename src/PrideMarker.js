@@ -2,6 +2,7 @@ import { CircleMarker, Tooltip, useMap } from "react-leaflet";
 import styled from "styled-components";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { getColorFromLatitude } from "./getColorFromLatitude";
+import * as L from "leaflet";
 
 export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
   const {
@@ -9,10 +10,16 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
     city,
     weekendNumber: markerWeekendNumber,
   } = pride;
-  const { setWeekendNumber } = usePrideSelect();
+  const { mode, selectedCity, selectCity } = usePrideSelect();
 
   const color = getColorFromLatitude(lat);
-  const currentlySelected = weekendNumber === markerWeekendNumber;
+  const currentlySelected =
+    mode === "weekend"
+      ? weekendNumber === markerWeekendNumber
+      : selectedCity === city;
+
+  const somethingIsSelected =
+    mode === "weekend" ? !!weekendNumber : !!selectedCity;
   return (
     <>
       <CircleMarker
@@ -21,10 +28,13 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         radius={8}
         fillColor={color.main}
         eventHandlers={{
-          click: () => setWeekendNumber(markerWeekendNumber),
+          click: (e) => {
+            L.DomEvent.stopPropagation(e);
+            selectCity(city);
+          },
         }}
         pathOptions={{
-          fillColor: !!weekendNumber
+          fillColor: somethingIsSelected
             ? currentlySelected
               ? color.highlighted
               : color.faded
@@ -33,7 +43,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           fillOpacity: 1,
           stroke: false,
         }}
-      ></CircleMarker>
+      />
       {currentlySelected && (
         <CircleMarker
           key={`selected-marker-${city}`}
@@ -41,7 +51,10 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           radius={20}
           color={color.highlighted}
           eventHandlers={{
-            click: () => setWeekendNumber(markerWeekendNumber),
+            click: (e) => {
+              L.DomEvent.stopPropagation(e);
+              selectCity(city);
+            },
           }}
           pathOptions={{
             fillOpacity: 0.01,
@@ -54,13 +67,16 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           </TooltipElement>
         </CircleMarker>
       )}
-      {!weekendNumber && (
+      {
         <CircleMarker
           key={`outermarker-${city}`}
           center={{ lat, lng }}
           radius={20}
           eventHandlers={{
-            click: () => setWeekendNumber(markerWeekendNumber),
+            click: (e) => {
+              L.DomEvent.stopPropagation(e);
+              selectCity(city);
+            },
           }}
           pathOptions={{
             stroke: false,
@@ -69,7 +85,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             fillColor: color.main,
           }}
         />
-      )}
+      }
     </>
   );
 };
