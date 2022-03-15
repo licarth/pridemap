@@ -8,9 +8,11 @@ import { MapContainer, SVGOverlay } from "react-leaflet";
 import styled from "styled-components";
 import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
+import { getFlagEmoji } from "./getFlagEmoji";
 import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
+import { SinglePrideIntro } from "./SinglePrideIntro";
 import { Timeline } from "./Timeline/Timeline";
 
 const Map = () => {
@@ -96,13 +98,15 @@ const Map = () => {
                     ? format(prides[0].paradeStartDate, "EEE, MMMM do")
                     : "To be announced"}
                 </DayHeading>
-                {prides.map(({ city }) => (
-                  <CityName key={`citylabel-${city}`}>{city}</CityName>
+                {prides.map(({ city, country }) => (
+                  <CityName key={`citylabel-${city}`}>
+                    {city} {getFlagEmoji(country)}
+                  </CityName>
                 ))}
               </PrideBlock>
             ))
             .value()}
-        {mode === "city" && <div>{selectedPride?.city}</div>}
+        {mode === "city" && <SinglePrideIntro pride={selectedPride} />}
       </RightColumn>
       {
         <SliderContainer>
@@ -187,7 +191,7 @@ const FlexBody = styled.div`
 const RightColumn = styled.div`
   position: absolute;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 40em;
   max-width: 95vw;
   z-index: 1000;

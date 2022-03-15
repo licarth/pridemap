@@ -19,7 +19,7 @@ export const PrideSelectContext = createContext({
 export const PrideSelectContextProvider = ({ children }) => {
   const [weekendNumber, setWeekendNumber] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
-  const [mode, setMode] = useState(null);
+  const [mode, setMode] = useState("weekend");
 
   const [previewedWeekendNumber, setPreviewedWeekendNumber] = useState();
 
@@ -56,6 +56,7 @@ export const PrideSelectContextProvider = ({ children }) => {
         };
         return [
           {
+            ...p,
             pin: map.getPin({
               lat,
               lng,

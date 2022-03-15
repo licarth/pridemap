@@ -7,12 +7,17 @@ import {
 import Map from "./Map";
 
 function App() {
-  const { nextWeekend, previousWeekend } = usePrideSelect();
+  const { nextWeekend, previousWeekend, resetSelection } = usePrideSelect();
   useEffect(() => {
     function handleKeyDown(e) {
-      if (e.keyCode === 37) {
+      if (e.keyCode === 27) {
+        // Escape
+        resetSelection();
+      } else if (e.keyCode === 37) {
+        // Left arrow
         previousWeekend();
       } else if (e.keyCode === 39) {
+        // Right arrow
         nextWeekend();
       }
     }
