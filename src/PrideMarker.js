@@ -1,8 +1,8 @@
-import { CircleMarker, Tooltip, useMap } from "react-leaflet";
+import * as L from "leaflet";
+import { CircleMarker, Tooltip } from "react-leaflet";
 import styled from "styled-components";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { getColorFromLatitude } from "./getColorFromLatitude";
-import * as L from "leaflet";
 
 export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
   const {

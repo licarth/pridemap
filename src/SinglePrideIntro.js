@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FaCalendar,
   FaFacebookSquare,
@@ -9,6 +9,7 @@ import {
   FaTwitterSquare,
 } from "react-icons/fa";
 import styled from "styled-components";
+import { BlackLink } from "./BlackLink";
 import { getFlagEmoji } from "./getFlagEmoji";
 
 export const SinglePrideIntro = ({ pride }) => {
@@ -16,6 +17,7 @@ export const SinglePrideIntro = ({ pride }) => {
 
   return (
     <PrideIntroContainer>
+      <PrideBadge imageUrl={pride.mainPictureLink} />
       <PrideTitle>{pride.name || `${pride.city} pride`}</PrideTitle>
       <DescriptionBody>
         <CityLocation pride={pride} />
@@ -35,6 +37,17 @@ const DescriptionBody = styled.div`
   align-self: flex-start;
   display: flex;
   flex-direction: column;
+`;
+
+const PrideBadge = ({ imageUrl }) => (
+  <>{imageUrl && <ProfilePicture src={imageUrl} />}</>
+);
+const ProfilePicture = styled.img`
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  height: 100px;
+  border-radius: 50%;
 `;
 
 const WebsiteLink = ({ source }) => (
@@ -86,14 +99,6 @@ const PrideIntroContainer = styled.div`
   align-items: center;
 `;
 
-const BlackLink = styled.a`
-  color: white;
-  :hover {
-    filter: invert(1);
-    background: black;
-    cursor: pointer;
-  }
-`;
 const LogoLink = styled.a`
   color: white;
 `;

@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import SVG from "react-inlinesvg";
 import { MapContainer, SVGOverlay } from "react-leaflet";
 import styled from "styled-components";
+import { BlackLink } from "./BlackLink";
 import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { getFlagEmoji } from "./getFlagEmoji";
@@ -25,6 +26,7 @@ const Map = () => {
     previewedWeekendNumber,
     mode,
     selectedPride,
+    selectCity,
   } = usePrideSelect();
 
   const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
@@ -100,7 +102,10 @@ const Map = () => {
                 </DayHeading>
                 {prides.map(({ city, country }) => (
                   <CityName key={`citylabel-${city}`}>
-                    {city} {getFlagEmoji(country)}
+                    <BlackLink onClick={() => selectCity(city)}>
+                      {city}
+                    </BlackLink>
+                    {" " + getFlagEmoji(country)}
                   </CityName>
                 ))}
               </PrideBlock>
@@ -204,10 +209,7 @@ const RightColumn = styled.div`
   background: rgba(2, 3, 0, 0.7);
 `;
 
-const CityName = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const CityName = styled.div``;
 const DayHeading = styled.h3``;
 const PrideBlock = styled.div``;
 
