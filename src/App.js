@@ -5,8 +5,9 @@ import {
   usePrideSelect,
 } from "./currentWeekNumberContext";
 import Map from "./Map";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-function App() {
+function InnerApp() {
   const { nextWeekend, previousWeekend, resetSelection } = usePrideSelect();
   useEffect(() => {
     function handleKeyDown(e) {
@@ -27,13 +28,24 @@ function App() {
     return function cleanup() {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [nextWeekend, previousWeekend]);
+  }, [nextWeekend, previousWeekend, resetSelection]);
 
   return <Map />;
 }
 
-export default () => (
+const App = () => (
   <PrideSelectContextProvider>
-    <App />
+    <InnerApp />
   </PrideSelectContextProvider>
 );
+
+const OuterApp = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/:mode/:id" element={<App />} />
+      <Route path="*" element={<App />} />
+    </Routes>
+  </BrowserRouter>
+);
+
+export default OuterApp;

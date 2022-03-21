@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { EffectCoverflow, FreeMode } from "swiper";
 import "swiper/css";
 // Import Swiper styles
@@ -10,38 +11,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { usePrideSelect } from "../currentWeekNumberContext";
 import { formatWeekend } from "../formatWeekend";
 import "./styles.css";
-import _ from "lodash";
-import styled from "styled-components";
 
 export const Timeline = ({ pridesPerWeekendNumber }) => {
-  const {
-    mode,
-    weekendNumber,
-    setWeekendNumber,
-    // setPreviewedWeekendNumber,
-    minWeekendNumber,
-    maxWeekendNumber,
-  } = usePrideSelect();
+  const { mode, allWeekendNumbers, weekendNumber, selectWeekend } =
+    usePrideSelect();
   const [swiper, setSwiper] = useState();
 
   const [previewMode, setPreviewMode] = useState(false);
-
-  const array = useMemo(
-    () => _.range(minWeekendNumber, maxWeekendNumber + 1).map(Number),
-    [minWeekendNumber, maxWeekendNumber]
-  );
-
-  console.log(weekendNumber);
 
   useEffect(() => {
     if (swiper && !previewMode) {
       if (!weekendNumber || mode !== "weekend") {
         swiper.slideTo(0);
       }
-      const slildeNumber = array.findIndex((n) => n === weekendNumber);
+      const slildeNumber = allWeekendNumbers.findIndex(
+        (n) => n === weekendNumber
+      );
       slildeNumber !== -1 && swiper.slideTo(slildeNumber + 1);
     }
-  }, [swiper, array, weekendNumber, previewMode, mode]);
+  }, [swiper, allWeekendNumbers, weekendNumber, previewMode, mode]);
 
   return (
     <>
@@ -50,7 +38,7 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
           <FadeDiv />
           <Swiper
             onSlideChange={(swiper) => {
-              setWeekendNumber(array[swiper.realIndex - 1]);
+              selectWeekend(allWeekendNumbers[swiper.realIndex - 1]);
             }}
             onTransitionEnd={(swiper) => {
               console.log("Animation end");
@@ -86,7 +74,7 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
                 <div>▶︎</div>
               </SwipeBox>
             </SwiperSlide>
-            {array.map((weekendNumber) => (
+            {allWeekendNumbers.map((weekendNumber) => (
               <SwiperSlide key={weekendNumber}>
                 <DateBox hasPrides={!!pridesPerWeekendNumber[weekendNumber]}>
                   {formatWeekend(weekendNumber)}
