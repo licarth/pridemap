@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
 import { onlyCountries } from "./computeMapSvg";
 import { usePrideSelect } from "./currentWeekNumberContext";
+import { formatWeekend } from "./formatWeekend";
 import { getFlagEmoji } from "./getFlagEmoji";
 import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
@@ -27,6 +28,7 @@ const Map = () => {
     mode,
     selectedPride,
     selectCity,
+    selectWeekend,
   } = usePrideSelect();
 
   const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
@@ -74,7 +76,13 @@ const Map = () => {
         zoomControl={false}
         dragging={true}
       >
-        <SetCenterOnChange coords={center} />
+        <SetCenterOnChange
+          coords={center}
+          mode={mode}
+          weekendNumber={weekendNumber}
+          selectWeekend={selectWeekend}
+          currentlySelectedPrides={currentlySelectedPrides}
+        />
         <SVGOverlay attributes={{}} bounds={bounds}>
           <Layer
             src={`data:image/svg+xml;utf8,${encodeURIComponent(onlyCountries)}`}
@@ -86,39 +94,67 @@ const Map = () => {
           ))}
       </StyledMapContainer>
       <RightColumn>
-        {mode === "weekend" &&
-          currentlySelectedPrides &&
-          _(currentlySelectedPrides)
-            .groupBy(({ paradeStartDate }) => getDay(paradeStartDate))
-            .mapKeys((v, i) => (i === "0" ? "7" : i))
-            .entries()
-            .sortBy(([a]) => a)
-            .map(([paradeStartDate, prides]) => (
-              <PrideBlock>
-                <DayHeading>
-                  {prides[0]?.paradeStartDate
-                    ? format(prides[0].paradeStartDate, "EEE, MMMM do")
-                    : "To be announced"}
-                </DayHeading>
-                {prides.map(({ city, country }) => (
-                  <CityName key={`citylabel-${city}`}>
-                    <BlackLink onClick={() => selectCity(city)}>
-                      {city}
-                    </BlackLink>
-                    {" " + getFlagEmoji(country)}
-                  </CityName>
-                ))}
-              </PrideBlock>
-            ))
-            .value()}
         {mode === "city" && <SinglePrideIntro pride={selectedPride} />}
       </RightColumn>
       {
-        <SliderContainer>
-          {mode === "city" || (
-            <Timeline pridesPerWeekendNumber={pridesPerWeekendNumber} />
-          )}
-        </SliderContainer>
+        <>
+          {
+            <BottomContainer>
+              <BottomCityListContainer>
+                {mode === "city" && (
+                  <Header>
+                    On the same weekend...{" "}
+                    <BlackLink onClick={() => selectWeekend(weekendNumber)}>
+                      View all on map ({formatWeekend(weekendNumber)})
+                    </BlackLink>
+                  </Header>
+                )}
+                {
+                  <CityList>
+                    {_(currentlySelectedPrides)
+                      .groupBy(({ paradeStartDate }) => getDay(paradeStartDate))
+                      .mapKeys((v, i) => (i === "0" ? "7" : i))
+                      .entries()
+                      .sortBy(([a]) => a)
+                      .map(([paradeStartDate, prides]) => (
+                        <PrideBlock>
+                          <DayHeading>
+                            {prides[0]?.paradeStartDate
+                              ? format(
+                                  prides[0].paradeStartDate,
+                                  "EEE, MMMM do"
+                                )
+                              : "To be announced"}
+                          </DayHeading>
+                          <CitiesList>
+                            {prides.map(({ city, country }) => (
+                              <CityName key={`citylabel-${city}`}>
+                                <BlackLink onClick={() => selectCity(city)}>
+                                  {selectedPride &&
+                                  selectedPride.city === city ? (
+                                    <u>{city}</u>
+                                  ) : (
+                                    city
+                                  )}
+                                </BlackLink>
+                                {" " + getFlagEmoji(country)}
+                              </CityName>
+                            ))}
+                          </CitiesList>
+                        </PrideBlock>
+                      ))
+                      .value()}
+                  </CityList>
+                }
+              </BottomCityListContainer>
+              {mode === "city" || (
+                <SliderContainer>
+                  <Timeline pridesPerWeekendNumber={pridesPerWeekendNumber} />
+                </SliderContainer>
+              )}
+            </BottomContainer>
+          }
+        </>
       }
     </FlexBody>
   );
@@ -150,7 +186,7 @@ const StyledMapContainer = styled(MapContainer)`
 `;
 
 const SliderContainer = styled.div`
-  position: absolute;
+  background: black;
 
   @media (max-width: 480px) {
     & {
@@ -182,7 +218,6 @@ const SliderContainer = styled.div`
   padding: 10px;
   border-radius: 20px;
   color: white;
-  background-color: black;
 `;
 
 const FlexBody = styled.div`
@@ -191,6 +226,11 @@ const FlexBody = styled.div`
   height: 100%;
   width: 100%;
   background-color: #020300;
+`;
+
+const CitiesList = styled.div`
+  max-height: 10vh;
+  overflow-y: scroll;
 `;
 
 const RightColumn = styled.div`
@@ -209,8 +249,44 @@ const RightColumn = styled.div`
   background: rgba(2, 3, 0, 0.7);
 `;
 
+const BottomCityListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: white;
+`;
+
+const BottomContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 20px;
+  z-index: 1000;
+  padding: 20px;
+  margin: 3px;
+  border-radius: 20px;
+  color: white;
+  max-height: 30vh;
+  overflow: scroll;
+  background: rgba(2, 3, 0, 0.7);
+`;
+
+const CityList = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+const Header = styled.span`
+  flex: 0 0 100%;
+`;
+
 const CityName = styled.div``;
-const DayHeading = styled.h3``;
-const PrideBlock = styled.div``;
+const DayHeading = styled.h3`
+  margin-bottom: 0;
+  margin-top: 0;
+`;
+const PrideBlock = styled.div`
+  margin-bottom: 10px;
+  margin-top: 10px;
+`;
 
 export default Map;

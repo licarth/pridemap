@@ -75,7 +75,10 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
               </SwipeBox>
             </SwiperSlide>
             {allWeekendNumbers.map((weekendNumber) => (
-              <SwiperSlide key={weekendNumber}>
+              <SwiperSlide
+                key={weekendNumber}
+                hidden={!pridesPerWeekendNumber[weekendNumber]}
+              >
                 <DateBox hasPrides={!!pridesPerWeekendNumber[weekendNumber]}>
                   {formatWeekend(weekendNumber)}
                 </DateBox>
