@@ -48,7 +48,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
         <CircleMarker
           key={`selected-marker-${city}`}
           center={{ lat, lng }}
-          radius={20}
+          radius={15}
           color={color.highlighted}
           eventHandlers={{
             click: (e) => {
@@ -80,7 +80,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
           }}
           pathOptions={{
             stroke: false,
-            fillOpacity: 0.2,
+            fillOpacity: 0,
             fill: true,
             fillColor: color.main,
           }}

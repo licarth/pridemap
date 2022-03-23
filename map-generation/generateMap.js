@@ -7,7 +7,7 @@ const southWest = [20, -35];
 const northEast = [72, 80];
 
 const mapJsonString = getMapJSON({
-  height: 170,
+  height: 70,
   grid: "diagonal",
   region: {
     lat: { min: southWest[0], max: northEast[0] },

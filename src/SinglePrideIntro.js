@@ -17,7 +17,7 @@ export const SinglePrideIntro = ({ pride }) => {
 
   return (
     <PrideIntroContainer>
-      <PrideBadge instagramId={pride.instagram} />
+      <PrideBadge pride={pride} />
       <PrideTitle>{pride.name || `${pride.city} pride`}</PrideTitle>
       <DescriptionBody>
         <CityLocation pride={pride} />
@@ -39,9 +39,7 @@ const DescriptionBody = styled.div`
   flex-direction: column;
 `;
 
-const PrideBadge = ({ instagramId }) => (
-  <>{instagramId && <ProfilePicture instagramId={instagramId} />}</>
-);
+const PrideBadge = ({ pride }) => <>{<ProfilePicture pride={pride} />}</>;
 const ProfilePicture = styled(ImageWithFallback)`
   position: absolute;
   right: 20px;

@@ -1,36 +1,37 @@
+import { pipe } from "fp-ts/lib/function.js";
 import fetch from "node-fetch";
-import instagramdp from "instagramdp";
 import { uploadBufferToBadge } from "./gcsUpload.js";
+import { getPictureLinkImgInn } from "./imgInnApi.js";
+import { validateUrl } from "./validateUrl.js";
+import * as Either from "fp-ts/lib/Either.js";
 
 const id = process.argv[2];
-
-// Do it for one image
-// instagram blaze => picture URL
-// download & upload to GCS
-const getPictureLink = async (id) => {
-  const {
-    graphql: {
-      user: { profile_pic_url_hd },
-    },
-  } = await (await fetch(`https://www.instagram.com/${id}/?__a=1`)).json();
-  return profile_pic_url_hd;
-};
-
-const getPictureLinkImgInn = async (id) => {
-  const link = await instagramdp.getDP(id);
-  return link.picture;
-};
 
 const bucketName = "gs://pridemap-eu-assets";
 const destFileName = `badges/instagram/${id}.png`;
 
 (async () => {
   const url = await getPictureLinkImgInn(id);
-  await uploadBufferToBadge({
-    imageStream: (await fetch(url)).body,
-    bucketName,
-    destFileName,
-  });
+  pipe(
+    validateUrl(url),
+    Either.fold(
+      (e) => {
+        console.log(`FAILURE: ${id}, Invalid URL`);
+      },
+      async () => {
+        try {
+          await uploadBufferToBadge({
+            imageStream: (await fetch(url)).body,
+            bucketName,
+            destFileName,
+          });
+        } catch (e) {
+          console.log(`FAILURE: ${id}, Unable to upload`);
+        }
+        console.log(`SUCCESS: ${id}`);
+      }
+    )
+  );
 })();
 
 // Get the logo URL from

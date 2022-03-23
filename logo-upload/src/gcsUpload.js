@@ -6,20 +6,19 @@ export const uploadBufferToBadge = async ({
   imageStream,
   bucketName,
   destFileName,
-}) => {
-  const storage = new Storage();
-  const myBucket = storage.bucket(bucketName);
-  const file = myBucket.file(destFileName);
+}) =>
+  new Promise((resolve, reject) => {
+    const storage = new Storage();
+    const myBucket = storage.bucket(bucketName);
+    const file = myBucket.file(destFileName);
 
-  imageStream
-    .pipe(file.createWriteStream())
-    .on("finish", () => {
-      console.log(`upload complete`);
-      // The file upload is complete
-    })
-    .on("error", (e) => {
-      console.log(e);
-    });
-
-  console.log(`${destFileName} uploaded to ${bucketName}`);
-};
+    imageStream
+      .pipe(file.createWriteStream())
+      .on("finish", () => {
+        resolve();
+        // The file upload is complete
+      })
+      .on("error", (e) => {
+        reject();
+      });
+  });

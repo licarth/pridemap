@@ -5,15 +5,17 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "all-logos": "cat ids.txt | xargs -L1 -P 8 yarn node ./src/index.js",
+    "single-logo": "node ./src/index.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "nodemon": "^2.0.15"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.18.2",
+    "fp-ts": "^2.11.9",
     "instagramdp": "^1.0.2"
   }
 }
