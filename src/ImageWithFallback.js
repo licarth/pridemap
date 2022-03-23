@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import _ from "lodash";
+import { useEffect, useState } from "react";
 
 export const ImageWithFallback = ({
   pride: { instagram, autoPictureLink, manualPictureLink, twitter, city },
@@ -7,28 +7,35 @@ export const ImageWithFallback = ({
 }) => {
   const [src, setSrc] = useState();
 
-  useEffect(async () => {
-    setSrc(null);
+  useEffect(() => {
+    (async () => {
+      setSrc(null);
 
-    const links = _.filter(
-      [
-        instagram &&
-          `https://storage.googleapis.com/pridemap-eu-assets/badges/instagram/${instagram}.png`,
-        manualPictureLink,
-        autoPictureLink,
-      ],
-      (i) => !_.isEmpty(i)
-    );
+      const links = _.filter(
+        [
+          instagram &&
+            `https://storage.googleapis.com/pridemap-eu-assets/badges/instagram/${instagram}.png`,
+          manualPictureLink,
+          autoPictureLink,
+        ],
+        (i) => !_.isEmpty(i)
+      );
 
-    for (const link of links) {
-      if (await setImageFromLink(link, setSrc)) {
-        break;
+      for (const link of links) {
+        if (await setImageFromLink(link, setSrc)) {
+          break;
+        }
       }
-    }
-  }, [city]);
+    })();
+  }, [city, instagram, autoPictureLink, manualPictureLink]);
 
   return src ? (
-    <img key={`logo-${city}`} src={src} className={className} />
+    <img
+      alt={`${city} pride logo`}
+      key={`logo-${city}`}
+      src={src}
+      className={className}
+    />
   ) : (
     <></>
   );
