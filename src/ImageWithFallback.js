@@ -13,9 +13,9 @@ export const ImageWithFallback = ({
 
       const links = _.filter(
         [
+          manualPictureLink,
           instagram &&
             `https://storage.googleapis.com/pridemap-eu-assets/badges/instagram/${instagram}.png`,
-          manualPictureLink,
           autoPictureLink,
         ],
         (i) => !_.isEmpty(i)
