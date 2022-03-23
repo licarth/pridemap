@@ -15,11 +15,7 @@ export function SetCenterOnChange({
   useMapEvents({
     click: (e) => {
       L.DomEvent.stopPropagation(e);
-      if (mode === "city" && currentlySelectedPrides.length > 1) {
-        selectWeekend(weekendNumber);
-      } else {
-        resetSelection();
-      }
+      resetSelection();
     },
   });
 
