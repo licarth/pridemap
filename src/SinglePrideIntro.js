@@ -10,13 +10,14 @@ import {
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
 import { getFlagEmoji } from "./getFlagEmoji";
+import { ImageWithFallback } from "./ImageWithFallback";
 
 export const SinglePrideIntro = ({ pride }) => {
   if (!pride) return null;
 
   return (
     <PrideIntroContainer>
-      <PrideBadge imageUrl={pride.mainPictureLink} />
+      <PrideBadge instagramId={pride.instagram} />
       <PrideTitle>{pride.name || `${pride.city} pride`}</PrideTitle>
       <DescriptionBody>
         <CityLocation pride={pride} />
@@ -38,10 +39,10 @@ const DescriptionBody = styled.div`
   flex-direction: column;
 `;
 
-const PrideBadge = ({ imageUrl }) => (
-  <>{imageUrl && <ProfilePicture src={imageUrl} />}</>
+const PrideBadge = ({ instagramId }) => (
+  <>{instagramId && <ProfilePicture instagramId={instagramId} />}</>
 );
-const ProfilePicture = styled.img`
+const ProfilePicture = styled(ImageWithFallback)`
   position: absolute;
   right: 20px;
   top: 50px;

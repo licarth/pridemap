@@ -5554,6 +5554,13 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+filter-invalid-dom-props@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/filter-invalid-dom-props/-/filter-invalid-dom-props-1.0.0.tgz#44d0d0306657b2584e04f71d428229ebb9867ca1"
+  integrity sha1-RNDQMGZXslhOBPcdQoIp67mGfKE=
+  dependencies:
+    html-attributes "1.1.0"
+
 finalhandler@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-1.1.2.tgz#b7e7d000ffd11938d0fdb053506f6ebabe9f587d"
@@ -6017,6 +6024,11 @@ hpack.js@^2.1.6:
     obuf "^1.0.0"
     readable-stream "^2.0.1"
     wbuf "^1.1.0"
+
+html-attributes@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/html-attributes/-/html-attributes-1.1.0.tgz#82027a4fac7a6070ea6c18cc3886aea18d6dea09"
+  integrity sha1-ggJ6T6x6YHDqbBjMOIauoY1t6gk=
 
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
@@ -8601,7 +8613,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8856,6 +8868,14 @@ react-icons@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
   integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
+
+react-image-fallback@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-image-fallback/-/react-image-fallback-8.0.0.tgz#18a88c3e011ee683f35fab1dd6e88eb5152b18ec"
+  integrity sha512-vvlxApJU7/mVl/1PYZTYROHZsG8cBxhHWj4JqkjN/ZAyf5srdAdIW0fg25jz5CYhGbKRJyv1WRrkNiy5FOA7kw==
+  dependencies:
+    filter-invalid-dom-props "1.0.0"
+    prop-types "^15.5.10"
 
 react-inlinesvg@^2.3.0:
   version "2.3.0"
