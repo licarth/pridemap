@@ -72,7 +72,7 @@ const Map = () => {
         center={center}
         zoom={zoom}
         minZoom={zoom - 1}
-        maxZoom={zoom + 2}
+        maxZoom={zoom + 1}
         zoomControl={false}
         dragging={true}
       >
