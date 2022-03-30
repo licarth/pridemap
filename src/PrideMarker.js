@@ -65,7 +65,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             // weight: currentlySelected ? "5" : "1",
           }}
         >
-          <TooltipElement permanent offset={[15, 0]} direction="right">
+          <TooltipElement permanent offset={[15, 0]}>
             {city}
           </TooltipElement>
         </CircleMarker>

@@ -51,7 +51,7 @@ const Map = () => {
     return <div>Loading...</div>;
   }
 
-  const DEFAULT_CENTER = [51.505, 8];
+  const DEFAULT_CENTER = [47, 8];
   const center =
     mode === "weekend"
       ? currentlySelectedPrides?.length > 0
@@ -117,9 +117,11 @@ const Map = () => {
             ))}
         </LayerGroup>
       </StyledMapContainer>
-      <RightColumn>
-        {mode === "city" && <SinglePrideIntro pride={selectedPride} />}
-      </RightColumn>
+      {mode === "city" && (
+        <TopFrame>
+          <SinglePrideIntro pride={selectedPride} />
+        </TopFrame>
+      )}
       {
         <>
           {
@@ -148,7 +150,7 @@ const Map = () => {
                                   prides[0].paradeStartDate,
                                   "EEE, MMMM do"
                                 )
-                              : "To be announced"}
+                              : "N/A"}
                           </DayHeading>
                           <CitiesList>
                             {prides.map(({ city, country }) => (
@@ -211,10 +213,11 @@ const StyledMapContainer = styled(MapContainer)`
 
 const SliderContainer = styled.div`
   background: black;
+  min-width: 300px;
 
   @media (max-width: 480px) {
     & {
-      width: 300px;
+      width: 100%;
     }
   }
 
@@ -257,20 +260,24 @@ const CitiesList = styled.div`
   overflow-y: scroll;
 `;
 
-const RightColumn = styled.div`
+const TopFrame = styled.div`
   position: absolute;
   display: flex;
   justify-content: space-evenly;
   width: 40em;
   max-width: 95vw;
   z-index: 1000;
-  padding: 20px;
-  margin: 3px;
   border-radius: 20px;
   color: white;
   max-height: 30vh;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
+
+  @media (max-width: 480px) {
+    margin: 0px;
+    border-radius: 0px;
+    width: 100%;
+  }
 `;
 
 const BottomCityListContainer = styled.div`
@@ -285,13 +292,20 @@ const BottomContainer = styled.div`
   flex-direction: column;
   bottom: 20px;
   z-index: 1000;
-  padding: 20px;
   margin: 3px;
   border-radius: 20px;
   color: white;
   max-height: 30vh;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
+
+  @media (max-width: 480px) {
+    margin: 0px;
+    border-radius: 0px;
+    width: 100%;
+    border-radius: 0px;
+    bottom: 0px;
+  }
 `;
 
 const CityList = styled.div`

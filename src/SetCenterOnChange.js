@@ -25,9 +25,24 @@ export function SetCenterOnChange({
       turf.points(currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng]))
     );
     const [minLat, minLng, maxLat, maxLng] = boundsForCurrentlySelectedPrides;
+    // Make it 30% bigger on the bottom
+    // const newMinLat = minLat - (maxLat - minLat) * 0.5;
+    const height = turf.distance(
+      turf.point([minLng, minLat]),
+      turf.point([minLng, maxLat])
+    );
+    const newHeight = height * 1.8;
+    const newMinLat = turf.rhumbDestination(
+      turf.point([maxLng, maxLat]),
+      newHeight,
+      180
+    ).geometry.coordinates[1];
+    console.log("minLat: " + minLat);
+    console.log("newMinLat: " + newMinLat);
+
     map.fitBounds(
       [
-        [minLat, minLng],
+        [newMinLat, minLng],
         [maxLat, maxLng],
       ],
       { animate: false, maxZoom: 4 }
