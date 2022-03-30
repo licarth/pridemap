@@ -13,10 +13,13 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
   const { mode, selectedCity, selectCity } = usePrideSelect();
 
   const color = getColorFromLatitude(lat);
-  const currentlySelected =
-    mode === "weekend"
-      ? weekendNumber === markerWeekendNumber
-      : selectedCity === city;
+  const currentlySelected = isCurrentlySelected(
+    mode,
+    weekendNumber,
+    markerWeekendNumber,
+    selectedCity,
+    city
+  );
 
   const somethingIsSelected =
     mode === "weekend" ? !!weekendNumber : !!selectedCity;
@@ -62,7 +65,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             // weight: currentlySelected ? "5" : "1",
           }}
         >
-          <TooltipElement permanent offset={[20, 0]}>
+          <TooltipElement permanent offset={[15, 0]} direction="right">
             {city}
           </TooltipElement>
         </CircleMarker>
@@ -112,3 +115,14 @@ const TooltipElement = styled(Tooltip)`
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
 `;
+function isCurrentlySelected(
+  mode,
+  weekendNumber,
+  markerWeekendNumber,
+  selectedCity,
+  city
+) {
+  return mode === "weekend"
+    ? weekendNumber === markerWeekendNumber
+    : selectedCity === city;
+}

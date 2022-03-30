@@ -4,7 +4,7 @@ import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
 import SVG from "react-inlinesvg";
-import { MapContainer, SVGOverlay } from "react-leaflet";
+import { MapContainer, SVGOverlay, LayerGroup } from "react-leaflet";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
 import { onlyCountries } from "./computeMapSvg";
@@ -29,6 +29,7 @@ const Map = () => {
     selectedPride,
     selectCity,
     selectWeekend,
+    selectedCity,
   } = usePrideSelect();
 
   const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
@@ -65,6 +66,18 @@ const Map = () => {
       ? selectedPride?.pin || DEFAULT_CENTER
       : DEFAULT_CENTER;
 
+  const [unselectedPrides, selectedPrides] =
+    prides &&
+    _.partition(prides, ({ weekendNumber, city }) =>
+      isCurrentlySelected(
+        mode,
+        thisWeekendNumber,
+        weekendNumber,
+        selectedCity,
+        city
+      )
+    );
+
   return (
     <FlexBody>
       <StyledMapContainer
@@ -88,10 +101,20 @@ const Map = () => {
             src={`data:image/svg+xml;utf8,${encodeURIComponent(onlyCountries)}`}
           />
         </SVGOverlay>
-        {prides &&
-          prides.map((pride) => (
-            <PrideMarker weekendNumber={thisWeekendNumber} pride={pride} />
-          ))}
+        <LayerGroup>
+          {/* Selected Prides */}
+          {selectedPrides &&
+            selectedPrides.map((pride) => (
+              <PrideMarker weekendNumber={thisWeekendNumber} pride={pride} />
+            ))}
+        </LayerGroup>
+        <LayerGroup>
+          {/* Selected Prides */}
+          {unselectedPrides &&
+            unselectedPrides.map((pride) => (
+              <PrideMarker weekendNumber={thisWeekendNumber} pride={pride} />
+            ))}
+        </LayerGroup>
       </StyledMapContainer>
       <RightColumn>
         {mode === "city" && <SinglePrideIntro pride={selectedPride} />}
@@ -290,3 +313,15 @@ const PrideBlock = styled.div`
 `;
 
 export default Map;
+
+function isCurrentlySelected(
+  mode,
+  weekendNumber,
+  markerWeekendNumber,
+  selectedCity,
+  city
+) {
+  return mode === "weekend"
+    ? weekendNumber === markerWeekendNumber
+    : selectedCity === city;
+}

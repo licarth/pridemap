@@ -8,7 +8,7 @@ sofiapridebg
 
 
 prague.pride
-
+csd.berlin.pride
 copenhagenpride
 tallinnpride
 
@@ -34,9 +34,9 @@ oslopride
 
 
 
+belgradepride
 
-
-
+stockholmpride
 
 
 
@@ -85,12 +85,10 @@ grenoblepride
 
 pridebarcelona
 
-valenciapride
+
 
 
 ibizapride
-
-
 
 
 
