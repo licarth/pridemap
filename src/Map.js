@@ -3,15 +3,14 @@ import { format, getDay } from "date-fns";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useMemo } from "react";
-import SVG from "react-inlinesvg";
 import { MapContainer, SVGOverlay, LayerGroup } from "react-leaflet";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
-import { onlyCountries } from "./computeMapSvg";
+import mapPoints from "./points.json";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { formatWeekend } from "./formatWeekend";
 import { getFlagEmoji } from "./getFlagEmoji";
-import { northEast, southWest } from "./mapBoundaries";
+import { height, northEast, southWest, width } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { SinglePrideIntro } from "./SinglePrideIntro";
@@ -97,9 +96,11 @@ const Map = () => {
           currentlySelectedPrides={currentlySelectedPrides}
         />
         <SVGOverlay attributes={{}} bounds={bounds}>
-          <Layer
-            src={`data:image/svg+xml;utf8,${encodeURIComponent(onlyCountries)}`}
-          />
+          <StyledSVG viewBox={`0 0 ${width} ${height}`}>
+            {mapPoints.map(([x, y]) => (
+              <circle r={0.22} cx={x} cy={y} fill="#665b57" />
+            ))}
+          </StyledSVG>
         </SVGOverlay>
         <LayerGroup>
           {/* Selected Prides */}
@@ -183,7 +184,7 @@ const Map = () => {
   );
 };
 
-const Layer = styled(SVG)`
+const StyledSVG = styled.svg`
   position: absolute;
   width: 100%;
   left: 0;

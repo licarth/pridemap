@@ -74,7 +74,6 @@ export const PrideSelectContextProvider = ({ children }) => {
             pin: map.getPin({
               lat,
               lng,
-              svgOptions: { radius: 0.4 },
             }),
             city: p.city,
             lat,
