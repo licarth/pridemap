@@ -52,7 +52,7 @@ function InnerApp() {
                     addressCountry: selectedPride.country,
                   },
                 },
-                date: format(selectedPride.paradeStartDate, "dd-MM-yyyy"),
+                startDate: format(selectedPride.paradeStartDate, "dd-MM-yyyy"),
               })
             : {},
         ]}
