@@ -43,7 +43,7 @@ function InnerApp() {
                 "@context": "https://schema.org",
                 "@type": "Event",
                 name:
-                  selectedPride.name || selectedPride.city + " Pride Parade",
+                  selectedPride?.name || selectedPride.city + " Pride Parade",
                 location: {
                   "@type": "Place",
                   address: {
