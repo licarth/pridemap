@@ -8,6 +8,7 @@ import Map from "./Map";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { helmetJsonLdProp } from "react-schemaorg";
+import { format } from "date-fns";
 
 function InnerApp() {
   const { nextWeekend, previousWeekend, resetSelection, selectedPride } =
@@ -37,19 +38,23 @@ function InnerApp() {
     <>
       <Helmet
         script={[
-          helmetJsonLdProp({
-            "@context": "https://schema.org",
-            "@type": "Event",
-            name: selectedPride.name || selectedPride.city + " Pride",
-            location: {
-              "@type": "Place",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: selectedPride.city,
-                addressCountry: selectedPride.country,
-              },
-            },
-          }),
+          selectedPride?.paradeStartDate
+            ? helmetJsonLdProp({
+                "@context": "https://schema.org",
+                "@type": "Event",
+                name:
+                  selectedPride.name || selectedPride.city + " Pride Parade",
+                location: {
+                  "@type": "Place",
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: selectedPride.city,
+                    addressCountry: selectedPride.country,
+                  },
+                },
+                date: format(selectedPride.paradeStartDate, "dd-MM-yyyy"),
+              })
+            : {},
         ]}
       >
         <meta charSet="utf-8" />
