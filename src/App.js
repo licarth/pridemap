@@ -6,9 +6,12 @@ import {
 } from "./currentWeekNumberContext";
 import Map from "./Map";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { helmetJsonLdProp } from "react-schemaorg";
 
 function InnerApp() {
-  const { nextWeekend, previousWeekend, resetSelection } = usePrideSelect();
+  const { nextWeekend, previousWeekend, resetSelection, selectedPride } =
+    usePrideSelect();
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.keyCode === 27) {
@@ -30,7 +33,33 @@ function InnerApp() {
     };
   }, [nextWeekend, previousWeekend, resetSelection]);
 
-  return <Map />;
+  return (
+    <>
+      <Helmet
+        script={[
+          helmetJsonLdProp({
+            "@context": "https://schema.org",
+            "@type": "Event",
+            name: selectedPride.name || selectedPride.city + " Pride",
+            location: {
+              "@type": "Place",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: selectedPride.city,
+                addressCountry: selectedPride.country,
+              },
+            },
+          }),
+        ]}
+      >
+        <meta charSet="utf-8" />
+        <title>
+          {selectedPride ? selectedPride.city + " Pride" : "Pride Map 2022"}
+        </title>
+      </Helmet>
+      <Map />;
+    </>
+  );
 }
 
 const App = () => (
