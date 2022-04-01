@@ -17,12 +17,19 @@ export const SinglePrideIntro = ({ pride }) => {
 
   return (
     <PrideIntroContainer>
-      <PrideBadge pride={pride} />
-      <PrideTitle>{pride.name || `${pride.city} pride`}</PrideTitle>
-      <DescriptionBody>
-        <CityLocation pride={pride} />
-        <ParadeDate pride={pride} />
-      </DescriptionBody>
+      <TopDescription>
+        <LeftDetails>
+          <PrideTitle>{pride.city}</PrideTitle>
+          <DescriptionBody>
+            <PrideLongName pride={pride} />
+            <ParadeDate pride={pride} />
+          </DescriptionBody>
+        </LeftDetails>
+        <RightLogo>
+          <PrideBadge pride={pride} />
+        </RightLogo>
+      </TopDescription>
+
       <BadgesContainer>
         {pride.instagram && <InstagramBadge id={pride.instagram} />}
         {pride.facebook && <FacebookBadge id={pride.facebook} />}
@@ -33,6 +40,25 @@ export const SinglePrideIntro = ({ pride }) => {
   );
 };
 
+const TopDescription = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+`;
+
+const LeftDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const RightLogo = styled.div`
+  width: 100px;
+  height: 100px;
+  margin-left: 30px;
+  align-self: center;
+`;
+
 const DescriptionBody = styled.div`
   align-self: flex-start;
   display: flex;
@@ -41,9 +67,7 @@ const DescriptionBody = styled.div`
 
 const PrideBadge = ({ pride }) => <>{<ProfilePicture pride={pride} />}</>;
 const ProfilePicture = styled(ImageWithFallback)`
-  position: absolute;
-  right: 20px;
-  top: 50px;
+  width: 100px;
   height: 100px;
   border-radius: 50%;
 `;
@@ -54,9 +78,10 @@ const WebsiteLink = ({ source }) => (
   </BlackLink>
 );
 
-const CityLocation = ({ pride }) => (
+const PrideLongName = ({ pride }) => (
   <span>
-    <FaMapMarkerAlt /> {pride.city} {getFlagEmoji(pride.country)}
+    <FaMapMarkerAlt /> {pride.name || `${pride.city} pride`},{" "}
+    {getFlagEmoji(pride.country)}
   </span>
 );
 const ParadeDate = ({ pride }) => (
@@ -86,9 +111,7 @@ const TwitterBadge = ({ id }) => (
   </LogoLink>
 );
 
-const PrideTitle = styled.h1`
-  align-self: flex-start;
-`;
+const PrideTitle = styled.h1``;
 
 const PrideIntroContainer = styled.div`
   width: 100%;

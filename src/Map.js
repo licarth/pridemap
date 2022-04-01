@@ -263,19 +263,17 @@ const CitiesList = styled.div`
 const TopFrame = styled.div`
   position: absolute;
   display: flex;
-  justify-content: space-evenly;
-  width: 40em;
-  max-width: 95vw;
+  width: 480px;
+  max-width: 100%;
   z-index: 1000;
-  border-radius: 20px;
   color: white;
   max-height: 30vh;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
+  padding-bottom: 5px;
 
   @media (max-width: 480px) {
     margin: 0px;
-    border-radius: 0px;
     width: 100%;
   }
 `;
@@ -293,7 +291,6 @@ const BottomContainer = styled.div`
   bottom: 20px;
   z-index: 1000;
   margin: 3px;
-  border-radius: 20px;
   color: white;
   max-height: 30vh;
   overflow: scroll;
@@ -315,6 +312,8 @@ const CityList = styled.div`
 
 const Header = styled.span`
   flex: 0 0 100%;
+  padding-left: 20px;
+  padding-top: 5px;
 `;
 
 const CityName = styled.div``;
