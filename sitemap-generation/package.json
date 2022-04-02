@@ -1,0 +1,12 @@
+{
+  "name": "sitemap-generation",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^2.28.0",
+    "google-spreadsheet": "^3.2.0",
+    "nodemon": "^2.0.15"
+  }
+}

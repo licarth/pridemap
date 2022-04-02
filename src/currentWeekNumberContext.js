@@ -1,4 +1,3 @@
-import { isValid, parse } from "date-fns";
 import { flow } from "fp-ts/lib/function";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
@@ -14,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useGoogleSheets from "use-google-sheets";
 import { map } from "./computeMapSvg";
 import { formatWeekend } from "./formatWeekend";
+import { parseDate } from "./parseDate";
 
 const formatWeekendUrl = flow(formatWeekend, (s) => s.replaceAll(" ", "_"));
 
@@ -60,14 +60,6 @@ export const PrideSelectContextProvider = ({ children }) => {
           return [];
         }
 
-        const parseDate = (string, defaultValue) => {
-          try {
-            const newLocal = parse(string, "dd/MM", new Date(2022, 1));
-            return isValid(newLocal) ? newLocal : defaultValue;
-          } catch {
-            return defaultValue;
-          }
-        };
         return [
           {
             ...p,
