@@ -3,4 +3,4 @@ User-agent: *
 Disallow:
 
 
-Sitemap: https://pridemap.eu/sitemap.xml
+Sitemap: https://pridemap.eu/sitemap.txt
