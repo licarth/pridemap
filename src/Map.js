@@ -15,6 +15,7 @@ import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { SinglePrideIntro } from "./SinglePrideIntro";
 import { Timeline } from "./Timeline/Timeline";
+import { ReactComponent as Loader } from "./loader.svg";
 
 const Map = () => {
   const bounds = [southWest, northEast];
@@ -48,7 +49,13 @@ const Map = () => {
   const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 4), []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <LoaderContainer>
+        <LoadingText>Please be patient,</LoadingText>
+        <LoadingText>we're asking the gays...</LoadingText>
+        <StyledLoader />
+      </LoaderContainer>
+    );
   }
 
   const DEFAULT_CENTER = [47, 8];
@@ -339,3 +346,31 @@ function isCurrentlySelected(
     ? weekendNumber === markerWeekendNumber
     : selectedCity === city;
 }
+
+const LoaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: #020300;
+`;
+
+const LoadingText = styled.div`
+  color: white;
+  font-weight: 300;
+  font-size: large;
+  margin-bottom: 5px;
+`;
+
+const StyledLoader = styled(Loader)`
+  margin-top: 40px;
+  height: 100px;
+  width: 100px;
+`;
+// const StyledLoader = styled.div`
+//   height: 200px;
+//   width: 200px;
+//   background: red;
+// `;
