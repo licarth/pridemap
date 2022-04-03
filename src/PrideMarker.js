@@ -115,6 +115,7 @@ const TooltipElement = styled(Tooltip)`
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
 `;
+
 function isCurrentlySelected(
   mode,
   weekendNumber,

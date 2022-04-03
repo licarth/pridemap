@@ -1,8 +1,10 @@
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { getColorFromLatitude } from "./getColorFromLatitude";
 
 export const ImageWithFallback = ({
-  pride: { instagram, autoPictureLink, manualPictureLink, twitter, city },
+  pride: { instagram, autoPictureLink, manualPictureLink, pin, city },
   className,
 }) => {
   const [src, setSrc] = useState();
@@ -28,13 +30,13 @@ export const ImageWithFallback = ({
       }
     })();
   }, [city, instagram, autoPictureLink, manualPictureLink]);
-
   return src ? (
-    <img
+    <LogoWithBorder
       alt={`${city} pride logo`}
       key={`logo-${city}`}
       src={src}
       className={className}
+      latitude={pin.lat}
     />
   ) : (
     <></>
@@ -55,3 +57,13 @@ async function setImageFromLink(linnk, setSrc) {
   }
   return true;
 }
+
+const LogoWithBorder = styled.img`
+  border: solid
+    ${({ latitude }) => {
+      console.log(getColorFromLatitude(latitude));
+      return getColorFromLatitude(latitude).main;
+    }}
+    5px;
+  box-sizing: content-box;
+`;

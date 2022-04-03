@@ -369,8 +369,3 @@ const StyledLoader = styled(Loader)`
   height: 100px;
   width: 100px;
 `;
-// const StyledLoader = styled.div`
-//   height: 200px;
-//   width: 200px;
-//   background: red;
-// `;
