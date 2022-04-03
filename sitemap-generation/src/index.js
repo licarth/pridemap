@@ -13,7 +13,6 @@ import fs from "fs";
 
   fs.writeFileSync("../public/sitemap.xml", ``);
   (await sheet.getRows({ offset: 1 })).map((p) => {
-    console.log(p.city);
     fs.appendFileSync(
       "../public/sitemap.xml",
       `\nhttps://pridemap.eu/city/${p.city}`

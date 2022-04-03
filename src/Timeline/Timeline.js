@@ -41,7 +41,6 @@ export const Timeline = ({ pridesPerWeekendNumber }) => {
               selectWeekend(allWeekendNumbers[swiper.realIndex - 1]);
             }}
             onTransitionEnd={(swiper) => {
-              console.log("Animation end");
               setPreviewMode(false);
             }}
             onTouchStart={(swiper) => {

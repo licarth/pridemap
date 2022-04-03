@@ -19,7 +19,7 @@ export const SinglePrideIntro = ({ pride }) => {
     <PrideIntroContainer>
       <TopDescription>
         <LeftDetails>
-          <PrideTitle>{pride.city}</PrideTitle>
+          <PrideTitle>{pride.name || `${pride.city} Pride`}</PrideTitle>
           <DescriptionBody>
             <PrideLongName pride={pride} />
             <ParadeDate pride={pride} />
@@ -80,10 +80,11 @@ const WebsiteLink = ({ source }) => (
 
 const PrideLongName = ({ pride }) => (
   <span>
-    <FaMapMarkerAlt /> {pride.name || `${pride.city} pride`},{" "}
+    <FaMapMarkerAlt /> {pride.city + " "}
     {getFlagEmoji(pride.country)}
   </span>
 );
+
 const ParadeDate = ({ pride }) => (
   <span>
     <FaFlag />{" "}

@@ -126,11 +126,6 @@ export const PrideSelectContextProvider = ({ children }) => {
     selectWeekend(Math.max(weekendNumber - 1, minWeekendNumber));
   }, [weekendNumber, selectWeekend, minWeekendNumber]);
 
-  console.log(`weekendNumber: ${weekendNumber}`);
-  console.log(`previewedWeekendNumber: ${previewedWeekendNumber}`);
-  console.log(`selectedCity: ${selectedCity}`);
-  console.log(`mode: ${mode}`);
-
   const allWeekendNumbers = useMemo(
     () => _.range(minWeekendNumber, maxWeekendNumber + 1).map(Number),
     [minWeekendNumber, maxWeekendNumber]

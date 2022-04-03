@@ -59,11 +59,6 @@ async function setImageFromLink(linnk, setSrc) {
 }
 
 const LogoWithBorder = styled.img`
-  border: solid
-    ${({ latitude }) => {
-      console.log(getColorFromLatitude(latitude));
-      return getColorFromLatitude(latitude).main;
-    }}
-    5px;
+  border: solid ${({ latitude }) => getColorFromLatitude(latitude).main} 5px;
   box-sizing: content-box;
 `;

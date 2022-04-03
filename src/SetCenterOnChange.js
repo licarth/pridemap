@@ -37,8 +37,6 @@ export function SetCenterOnChange({
       newHeight,
       180
     ).geometry.coordinates[1];
-    console.log("minLat: " + minLat);
-    console.log("newMinLat: " + newMinLat);
 
     map.fitBounds(
       [
