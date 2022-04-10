@@ -9,6 +9,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { helmetJsonLdProp } from "react-schemaorg";
 import { format } from "date-fns";
+import { SearchFrame } from "./components/SearchFrame";
 
 function InnerApp() {
   const { nextWeekend, previousWeekend, resetSelection, selectedPride } =
@@ -62,6 +63,7 @@ function InnerApp() {
           {selectedPride ? selectedPride.city + " Pride" : "Pride Map 2022"}
         </title>
       </Helmet>
+      <SearchFrame />
       <Map />;
     </>
   );

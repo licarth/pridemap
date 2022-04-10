@@ -52,7 +52,7 @@ const Map = () => {
     return (
       <LoaderContainer>
         <LoadingText>Please be patient,</LoadingText>
-        <LoadingText>we're asking the gays...</LoadingText>
+        <LoadingText>data is proudly being loaded...</LoadingText>
         <StyledLoader />
       </LoaderContainer>
     );
