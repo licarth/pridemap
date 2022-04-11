@@ -49,7 +49,10 @@ export const SearchResults = ({ cityResults, closeSearch }) => {
       }
     }
 
-    if (cityResults.length > 0 && selectedResult === null) {
+    if (
+      cityResults.length > 0 &&
+      (selectedResult === null || selectedResult >= cityResults.length)
+    ) {
       setSelectedResult(0);
     }
 
