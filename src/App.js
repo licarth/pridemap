@@ -1,39 +1,17 @@
-import { useEffect } from "react";
+import { format } from "date-fns";
+import { Helmet } from "react-helmet";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { helmetJsonLdProp } from "react-schemaorg";
 import "./App.css";
+import { SearchFrame } from "./components/SearchFrame";
 import {
   PrideSelectContextProvider,
   usePrideSelect,
 } from "./currentWeekNumberContext";
 import Map from "./Map";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { helmetJsonLdProp } from "react-schemaorg";
-import { format } from "date-fns";
-import { SearchFrame } from "./components/SearchFrame";
 
 function InnerApp() {
-  const { nextWeekend, previousWeekend, resetSelection, selectedPride } =
-    usePrideSelect();
-  useEffect(() => {
-    function handleKeyDown(e) {
-      if (e.keyCode === 27) {
-        // Escape
-        resetSelection();
-      } else if (e.keyCode === 37) {
-        // Left arrow
-        previousWeekend();
-      } else if (e.keyCode === 39) {
-        // Right arrow
-        nextWeekend();
-      }
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return function cleanup() {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [nextWeekend, previousWeekend, resetSelection]);
+  const { selectedPride } = usePrideSelect();
 
   return (
     <>
@@ -64,7 +42,7 @@ function InnerApp() {
         </title>
       </Helmet>
       <SearchFrame />
-      <Map />;
+      <Map />
     </>
   );
 }

@@ -2,11 +2,14 @@ import styled from "styled-components";
 
 export const SearchBar = ({ setSearchTerm, value }) => {
   return (
-    <StyledSearchBar
-      placeholder="Search prides..."
-      onChange={(e) => setSearchTerm(e.target.value)}
-      value={value}
-    />
+    <>
+      <StyledSearchBar
+        placeholder="Search prides..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+        value={value}
+        autoFocus
+      />
+    </>
   );
 };
 

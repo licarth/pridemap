@@ -2,7 +2,7 @@ import * as turf from "@turf/turf";
 import { format, getDay } from "date-fns";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MapContainer, SVGOverlay, LayerGroup } from "react-leaflet";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
@@ -30,6 +30,9 @@ const Map = () => {
     selectCity,
     selectWeekend,
     selectedCity,
+    resetSelection,
+    previousWeekend,
+    nextWeekend,
   } = usePrideSelect();
 
   const thisWeekendNumber = previewedWeekendNumber || weekendNumber;
@@ -38,6 +41,29 @@ const Map = () => {
     () => _(prides).groupBy("weekendNumber").value(),
     [prides]
   );
+
+  useEffect(() => {
+    if (mode) {
+      function handleKeyDown(e) {
+        if (e.keyCode === 27) {
+          // Escape
+          resetSelection();
+        } else if (e.keyCode === 37) {
+          // Left arrow
+          previousWeekend();
+        } else if (e.keyCode === 39) {
+          // Right arrow
+          nextWeekend();
+        }
+      }
+
+      document.addEventListener("keydown", handleKeyDown);
+
+      return function cleanup() {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [mode, nextWeekend, previousWeekend, resetSelection]);
 
   const currentlySelectedPrides = useMemo(
     () =>

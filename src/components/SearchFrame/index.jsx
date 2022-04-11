@@ -1,32 +1,18 @@
+import Fuse from "fuse.js";
+import { useState } from "react";
 import styled from "styled-components";
 import { usePrideSelect } from "../../currentWeekNumberContext";
 import { SearchBar } from "../SearchBar";
-import { useState } from "react";
 import { SearchResults } from "./SearchResults";
-import { formatWeekend } from "../../formatWeekend";
-import Fuse from "fuse.js";
 
 export const SearchFrame = () => {
   const { prides, mode } = usePrideSelect();
-
-  const richPrides = prides
-    ? prides.map((pride) => ({
-        ...pride,
-        weekendSearch: formatWeekend(pride.weekendNumber),
-      }))
-    : [];
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const cityResults = new Fuse(prides, {
     includeMatches: true,
     keys: ["city"],
-    threshold: 0.5,
-  }).search(searchTerm);
-
-  const weekendResults = new Fuse(richPrides, {
-    includeMatches: true,
-    keys: ["weekendSearch"],
     threshold: 0.5,
   }).search(searchTerm);
 
@@ -38,7 +24,6 @@ export const SearchFrame = () => {
           {searchTerm !== "" && (
             <SearchResults
               cityResults={cityResults}
-              weekendResults={weekendResults}
               closeSearch={() => setSearchTerm("")}
             />
           )}

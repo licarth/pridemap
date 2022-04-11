@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { usePrideSelect } from "../../currentWeekNumberContext";
 import { getFlagEmoji } from "../../getFlagEmoji";
@@ -13,6 +13,52 @@ export const SearchResults = ({ cityResults, closeSearch }) => {
   const { selectCity } = usePrideSelect();
 
   const [selectedResult, setSelectedResult] = useState(null);
+
+  useEffect(() => {
+    const newLocal = () => console.log("keydown");
+    document.addEventListener("keydown", newLocal);
+    return () => document.removeEventListener("keydown", newLocal);
+  });
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.keyCode === 27) {
+        // Escape
+        console.log("closing search");
+        closeSearch();
+      } else if (e.keyCode === 38) {
+        // Up
+        if (selectedResult === null) {
+          setSelectedResult(cityResults.length - 1);
+        } else if (selectedResult > 0) {
+          setSelectedResult(selectedResult - 1);
+        }
+      } else if (e.keyCode === 40) {
+        // Down
+        if (selectedResult === null) {
+          setSelectedResult(0);
+        } else if (selectedResult < cityResults.length - 1) {
+          setSelectedResult(selectedResult + 1);
+        }
+      } else if (e.keyCode === 13) {
+        // Enter
+        if (selectedResult !== null) {
+          selectCity(cityResults[selectedResult].item.city);
+          closeSearch();
+        }
+      }
+    }
+
+    if (cityResults.length > 0 && selectedResult === null) {
+      setSelectedResult(0);
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedResult, selectCity, cityResults, setSelectedResult, closeSearch]);
 
   return (
     <StyledSearchResults>
