@@ -9,7 +9,7 @@ import { BlackLink } from "./BlackLink";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { formatWeekend } from "./formatWeekend";
 import { getFlagEmoji } from "./getFlagEmoji";
-import { ReactComponent as Loader } from "./loader.svg";
+import { Loader } from "./Loader";
 import { MapBackground } from "./MapBackground";
 import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
@@ -75,13 +75,7 @@ const Map = () => {
   const zoom = useMemo(() => (window.innerWidth < 1000 ? 4 : 4), []);
 
   if (loading) {
-    return (
-      <LoaderContainer>
-        <LoadingText>Please be patient,</LoadingText>
-        <LoadingText>data is proudly being loaded...</LoadingText>
-        <StyledLoader />
-      </LoaderContainer>
-    );
+    return <Loader />;
   }
 
   const DEFAULT_CENTER = [47, 8];
@@ -351,26 +345,3 @@ function isCurrentlySelected(
     ? weekendNumber === markerWeekendNumber
     : selectedCity === city;
 }
-
-const LoaderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background: #020300;
-`;
-
-const LoadingText = styled.div`
-  color: white;
-  font-weight: 300;
-  font-size: large;
-  margin-bottom: 5px;
-`;
-
-const StyledLoader = styled(Loader)`
-  margin-top: 40px;
-  height: 100px;
-  width: 100px;
-`;

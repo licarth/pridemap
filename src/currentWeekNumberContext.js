@@ -77,6 +77,7 @@ export const PrideSelectContextProvider = ({ children }) => {
       })
     );
   }, [loading, error, data]);
+
   const pridesByCities = useMemo(() => _.keyBy(prides, "city"), [prides]);
 
   const { weekendNumber, selectedCity } = useMemo(() => {

@@ -1,63 +1,21 @@
-import { format } from "date-fns";
-import { Helmet } from "react-helmet";
+import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { helmetJsonLdProp } from "react-schemaorg";
 import "./App.css";
-import { SearchFrame } from "./components/SearchFrame";
-import {
-  PrideSelectContextProvider,
-  usePrideSelect,
-} from "./currentWeekNumberContext";
-import Map from "./Map";
+import { Loader } from "./Loader";
 
-function InnerApp() {
-  const { selectedPride } = usePrideSelect();
+const MapApp = React.lazy(() => import("./MapApp"));
 
-  return (
-    <>
-      <Helmet
-        script={[
-          selectedPride?.paradeStartDate
-            ? helmetJsonLdProp({
-                "@context": "https://schema.org",
-                "@type": "Event",
-                name:
-                  selectedPride?.name || selectedPride.city + " Pride Parade",
-                location: {
-                  "@type": "Place",
-                  address: {
-                    "@type": "PostalAddress",
-                    addressLocality: selectedPride.city,
-                    addressCountry: selectedPride.country,
-                  },
-                },
-                startDate: format(selectedPride.paradeStartDate, "dd-MM-yyyy"),
-              })
-            : {},
-        ]}
-      >
-        <meta charSet="utf-8" />
-        <title>
-          {selectedPride ? selectedPride.city + " Pride" : "Pride Map 2022"}
-        </title>
-      </Helmet>
-      <SearchFrame />
-      <Map />
-    </>
-  );
-}
-
-const App = () => (
-  <PrideSelectContextProvider>
-    <InnerApp />
-  </PrideSelectContextProvider>
+const MapAppSuspense = () => (
+  <Suspense fallback={<Loader />}>
+    <MapApp />
+  </Suspense>
 );
 
 const OuterApp = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/:mode/:id" element={<App />} />
-      <Route path="*" element={<App />} />
+      <Route path="/:mode/:id" element={<MapAppSuspense />} />
+      <Route path="*" element={<MapAppSuspense />} />
     </Routes>
   </BrowserRouter>
 );
