@@ -8,6 +8,7 @@ export default function SetCenterOnChange({
   mode,
   weekendNumber,
   selectWeekend,
+  selectedPride,
   currentlySelectedPrides,
 }) {
   const map = useMap();
@@ -20,9 +21,16 @@ export default function SetCenterOnChange({
     },
   });
 
-  if (mode === "weekend" && currentlySelectedPrides.length > 0) {
+  const prides =
+    mode === "weekend" && currentlySelectedPrides.length > 0
+      ? currentlySelectedPrides
+      : selectedPride
+      ? [selectedPride]
+      : [];
+
+  if (prides.length > 0) {
     const boundsForCurrentlySelectedPrides = turf.bbox(
-      turf.points(currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng]))
+      turf.points(prides.map(({ pin }) => [pin.lat, pin.lng]))
     );
     const [minLat, minLng, maxLat, maxLng] = boundsForCurrentlySelectedPrides;
     // Make it 30% bigger on the bottom

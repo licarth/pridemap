@@ -111,6 +111,7 @@ const Map = () => {
             weekendNumber={weekendNumber}
             selectWeekend={selectWeekend}
             currentlySelectedPrides={currentlySelectedPrides}
+            selectedPride={selectedPride}
           />
         </Suspense>
         <MapBackground bounds={bounds} />
