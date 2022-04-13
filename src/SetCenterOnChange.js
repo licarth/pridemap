@@ -3,7 +3,7 @@ import { usePrideSelect } from "./currentWeekNumberContext";
 import * as L from "leaflet";
 import * as turf from "@turf/turf";
 
-export function SetCenterOnChange({
+export default function SetCenterOnChange({
   coords,
   mode,
   weekendNumber,

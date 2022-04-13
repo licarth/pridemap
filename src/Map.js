@@ -1,8 +1,7 @@
-import * as turf from "@turf/turf";
 import { format, getDay } from "date-fns";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
-import { useEffect, useMemo } from "react";
+import React, { Suspense, useEffect, useMemo } from "react";
 import { LayerGroup, MapContainer } from "react-leaflet";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
@@ -13,9 +12,10 @@ import { Loader } from "./Loader";
 import { MapBackground } from "./MapBackground";
 import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
-import { SetCenterOnChange } from "./SetCenterOnChange";
 import { SinglePrideIntro } from "./SinglePrideIntro";
 import { Timeline } from "./Timeline/Timeline";
+
+const SetCenterOnChange = React.lazy(() => import("./SetCenterOnChange"));
 
 const Map = () => {
   const bounds = [southWest, northEast];
@@ -79,18 +79,7 @@ const Map = () => {
   }
 
   const DEFAULT_CENTER = [47, 8];
-  const center =
-    mode === "weekend"
-      ? currentlySelectedPrides?.length > 0
-        ? turf.centerOfMass(
-            turf.points(
-              currentlySelectedPrides.map(({ pin }) => [pin.lat, pin.lng])
-            )
-          )?.geometry?.coordinates
-        : DEFAULT_CENTER
-      : mode === "city"
-      ? selectedPride?.pin || DEFAULT_CENTER
-      : DEFAULT_CENTER;
+  const center = DEFAULT_CENTER;
 
   const [unselectedPrides, selectedPrides] =
     prides &&
@@ -115,13 +104,15 @@ const Map = () => {
         zoomControl={false}
         dragging={true}
       >
-        <SetCenterOnChange
-          coords={center}
-          mode={mode}
-          weekendNumber={weekendNumber}
-          selectWeekend={selectWeekend}
-          currentlySelectedPrides={currentlySelectedPrides}
-        />
+        <Suspense fallback={<></>}>
+          <SetCenterOnChange
+            coords={center}
+            mode={mode}
+            weekendNumber={weekendNumber}
+            selectWeekend={selectWeekend}
+            currentlySelectedPrides={currentlySelectedPrides}
+          />
+        </Suspense>
         <MapBackground bounds={bounds} />
         <LayerGroup>
           {/* Selected Prides */}
