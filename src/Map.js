@@ -3,19 +3,19 @@ import { format, getDay } from "date-fns";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
 import { useEffect, useMemo } from "react";
-import { MapContainer, SVGOverlay, LayerGroup } from "react-leaflet";
+import { LayerGroup, MapContainer } from "react-leaflet";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
-import mapPoints from "./points.json";
 import { usePrideSelect } from "./currentWeekNumberContext";
 import { formatWeekend } from "./formatWeekend";
 import { getFlagEmoji } from "./getFlagEmoji";
-import { height, northEast, southWest, width } from "./mapBoundaries";
+import { ReactComponent as Loader } from "./loader.svg";
+import { MapBackground } from "./MapBackground";
+import { northEast, southWest } from "./mapBoundaries";
 import { PrideMarker } from "./PrideMarker";
 import { SetCenterOnChange } from "./SetCenterOnChange";
 import { SinglePrideIntro } from "./SinglePrideIntro";
 import { Timeline } from "./Timeline/Timeline";
-import { ReactComponent as Loader } from "./loader.svg";
 
 const Map = () => {
   const bounds = [southWest, northEast];
@@ -128,13 +128,7 @@ const Map = () => {
           selectWeekend={selectWeekend}
           currentlySelectedPrides={currentlySelectedPrides}
         />
-        <SVGOverlay attributes={{}} bounds={bounds}>
-          <StyledSVG viewBox={`0 0 ${width} ${height}`}>
-            {mapPoints.map(([x, y]) => (
-              <circle r={0.22} cx={x} cy={y} fill="#665b57" />
-            ))}
-          </StyledSVG>
-        </SVGOverlay>
+        <MapBackground bounds={bounds} />
         <LayerGroup>
           {/* Selected Prides */}
           {selectedPrides &&
@@ -218,21 +212,6 @@ const Map = () => {
     </FlexBody>
   );
 };
-
-const StyledSVG = styled.svg`
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-
-  circle {
-    :hover {
-      r: 0.7;
-      padding: 100px;
-      border: solid black;
-    }
-  }
-`;
 
 const StyledMapContainer = styled(MapContainer)`
   padding: 0;
