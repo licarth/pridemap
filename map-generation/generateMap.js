@@ -26,7 +26,7 @@ const mapSvgString = map.getSVG({
 });
 const mapPoints = JSON.stringify(map.getPoints().map((p) => [p.x, p.y]));
 
-fs.writeFileSync("./src/map.json", mapJsonString);
+fs.writeFileSync("./public/map.json", mapJsonString);
 fs.writeFileSync("./public/map.svg", mapSvgString);
 fs.writeFileSync("./src/points.json", mapPoints);
 fs.writeFileSync(

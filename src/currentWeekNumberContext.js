@@ -1,3 +1,4 @@
+import DottedMap from "dotted-map/without-countries";
 import { flow } from "fp-ts/lib/function";
 import _ from "lodash";
 import "rc-slider/assets/index.css";
@@ -6,12 +7,12 @@ import {
   default as React,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useGoogleSheets from "use-google-sheets";
-import { map } from "./computeMapSvg";
 import { formatWeekend } from "./formatWeekend";
 import { parseDate } from "./parseDate";
 
@@ -48,10 +49,21 @@ export const PrideSelectContextProvider = ({ children }) => {
     sheetId: "1P7xHRf4C7Gh6HBc1FdJbdxO73UqgM-_TbAm6341SutI",
   });
 
+  const [map, setMap] = useState();
+
+  useEffect(() => {
+    fetch("/map.json")
+      .then((response) => response.json())
+      .then((json) => {
+        setMap(new DottedMap({ map: json }));
+      });
+  }, []);
+
   const prides = useMemo(() => {
     return (
       !loading &&
       !error &&
+      map &&
       data[0].data.slice(1).flatMap((p) => {
         const lat = Number(p.Latitude);
         const lng = Number(p.Longitude);
@@ -76,7 +88,7 @@ export const PrideSelectContextProvider = ({ children }) => {
         ];
       })
     );
-  }, [loading, error, data]);
+  }, [loading, error, data, map]);
 
   const pridesByCities = useMemo(() => _.keyBy(prides, "city"), [prides]);
 
