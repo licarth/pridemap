@@ -132,7 +132,10 @@ const Map = () => {
       </StyledMapContainer>
       {mode === "city" && (
         <TopFrame>
-          <SinglePrideIntro pride={selectedPride} />
+          <SinglePrideIntro
+            pride={selectedPride}
+            resetSelection={resetSelection}
+          />
         </TopFrame>
       )}
       {
@@ -265,7 +268,6 @@ const TopFrame = styled.div`
   max-width: 100%;
   z-index: 1000;
   color: white;
-  max-height: 30vh;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
   padding-bottom: 5px;
@@ -273,6 +275,7 @@ const TopFrame = styled.div`
   @media (max-width: 480px) {
     margin: 0px;
     width: 100%;
+    height: 100%;
   }
 `;
 

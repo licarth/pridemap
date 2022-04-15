@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "all-logos": "cat ids.txt | xargs -L1 -P 8 yarn node ./src/index.js",
+    "all-logos": "yarn node ./src/index.js",
     "single-logo": "node ./src/index.js"
   },
   "author": "",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.18.2",
     "fp-ts": "^2.11.9",
+    "google-spreadsheet": "^3.2.0",
     "instagramdp": "^1.0.2"
   }
 }

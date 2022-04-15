@@ -11,11 +11,13 @@ import fs from "fs";
 
   const sheet = doc.sheetsByIndex[0];
 
-  fs.writeFileSync("../public/sitemap.xml", ``);
+  fs.writeFileSync("../public/sitemap.txt", ``);
   (await sheet.getRows({ offset: 1 })).map((p) => {
-    fs.appendFileSync(
-      "../public/sitemap.xml",
-      `\nhttps://pridemap.eu/city/${p.city}`
-    );
+    if (p.weekendNumber) {
+      fs.appendFileSync(
+        "../public/sitemap.txt",
+        `https://pridemap.eu/city/${p.city}\n`
+      );
+    }
   });
 })();

@@ -12,11 +12,12 @@ import { BlackLink } from "./BlackLink";
 import { getFlagEmoji } from "./getFlagEmoji";
 import { ImageWithFallback } from "./ImageWithFallback";
 
-export const SinglePrideIntro = ({ pride }) => {
+export const SinglePrideIntro = ({ pride, resetSelection }) => {
   if (!pride) return null;
 
   return (
     <PrideIntroContainer>
+      <StyledCloseButton resetSelection={resetSelection} />
       <TopDescription>
         <LeftDetails>
           <PrideTitle>{pride.name || `${pride.city} Pride`}</PrideTitle>
@@ -56,6 +57,7 @@ const RightLogo = styled.div`
   width: 100px;
   height: 100px;
   margin-left: 30px;
+  margin-right: 10px;
   align-self: center;
 `;
 
@@ -142,3 +144,24 @@ const logo = (logo) =>
       cursor: pointer;
     }
   `);
+
+const StyledCloseButton = ({ resetSelection }) => {
+  return (
+    <CloseButton
+      onClick={() => {
+        resetSelection();
+      }}
+    >
+      ╳
+    </CloseButton>
+  );
+};
+
+const CloseButton = styled.span`
+  position: absolute;
+  right: 0px;
+  margin-top: 10px;
+  margin-right: 20px;
+  font-size: large;
+  cursor: pointer;
+`;
