@@ -64,11 +64,7 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             fill: true,
             // weight: currentlySelected ? "5" : "1",
           }}
-        >
-          <TooltipElement permanent offset={[15, 0]}>
-            {city}
-          </TooltipElement>
-        </CircleMarker>
+        ></CircleMarker>
       )}
       {
         <CircleMarker
@@ -87,7 +83,11 @@ export const PrideMarker = ({ weekendNumber, pride, zoomLevel }) => {
             fill: true,
             fillColor: color.main,
           }}
-        />
+        >
+          <TooltipElement permanent={currentlySelected} offset={[15, 0]}>
+            {city}
+          </TooltipElement>
+        </CircleMarker>
       }
     </>
   );
@@ -114,6 +114,7 @@ const TooltipElement = styled(Tooltip)`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
+  ${({ permanent }) => permanent && "border: solid gray;"}
 `;
 
 function isCurrentlySelected(
