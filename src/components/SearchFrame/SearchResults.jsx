@@ -71,7 +71,7 @@ export const SearchResults = ({ cityResults, closeSearch }) => {
         return (
           <ResultBadge
             selected={selectedResult === i}
-            onMouseEnter={() => setSelectedResult(i)}
+            onMouseMove={() => setSelectedResult(i)}
             onClick={() => {
               closeSearch();
               return selectCity(pride.city);
