@@ -270,7 +270,7 @@ const TopFrame = styled.div`
   color: white;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 
   @media (max-width: 480px) {
     margin: 0px;
@@ -291,11 +291,16 @@ const BottomContainer = styled.div`
   flex-direction: column;
   bottom: 20px;
   z-index: 1000;
-  margin: 3px;
   color: white;
   max-height: 30vh;
   overflow: scroll;
   background: rgba(2, 3, 0, 0.7);
+
+  @media (min-width: 480px) {
+    width: 700px;
+    padding: 30px;
+    font-size: 1.3em;
+  }
 
   @media (max-width: 480px) {
     margin: 0px;

@@ -58,6 +58,7 @@ const RightLogo = styled.div`
   height: 100px;
   margin-left: 30px;
   margin-right: 10px;
+  margin-top: 20px;
   align-self: center;
 `;
 
