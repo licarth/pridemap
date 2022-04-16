@@ -7,10 +7,12 @@ import {
   FaMapMarkerAlt,
   FaTwitterSquare,
 } from "react-icons/fa";
+import { BsCalendar3Week } from "react-icons/bs";
 import styled from "styled-components";
 import { BlackLink } from "./BlackLink";
 import { getFlagEmoji } from "./getFlagEmoji";
 import { ImageWithFallback } from "./ImageWithFallback";
+import { prideName } from "./prideName";
 
 export const SinglePrideIntro = ({ pride, resetSelection }) => {
   if (!pride) return null;
@@ -20,10 +22,11 @@ export const SinglePrideIntro = ({ pride, resetSelection }) => {
       <StyledCloseButton resetSelection={resetSelection} />
       <TopDescription>
         <LeftDetails>
-          <PrideTitle>{pride.name || `${pride.city} Pride`}</PrideTitle>
+          <PrideTitle>{prideName(pride)}</PrideTitle>
           <DescriptionBody>
             <PrideLongName pride={pride} />
             <ParadeDate pride={pride} />
+            <FestivalDates pride={pride} />
           </DescriptionBody>
         </LeftDetails>
         <RightLogo>
@@ -66,6 +69,7 @@ const DescriptionBody = styled.div`
   align-self: flex-start;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `;
 
 const PrideBadge = ({ pride }) => <>{<ProfilePicture pride={pride} />}</>;
@@ -93,6 +97,18 @@ const ParadeDate = ({ pride }) => (
     <FaFlag />{" "}
     {pride?.paradeStartDate
       ? format(pride.paradeStartDate, "EEE, MMMM do")
+      : "To be announced"}
+  </span>
+);
+
+const FestivalDates = ({ pride }) => (
+  <span>
+    <BsCalendar3Week />{" "}
+    {pride?.festivalStartDate && pride?.festivalEndDate
+      ? `${format(pride.festivalStartDate, "MMM do")} - ${format(
+          pride.festivalEndDate,
+          "MMM do"
+        )}`
       : "To be announced"}
   </span>
 );

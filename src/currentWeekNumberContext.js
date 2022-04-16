@@ -84,6 +84,8 @@ export const PrideSelectContextProvider = ({ children }) => {
             lng,
             weekendNumber,
             paradeStartDate: parseDate(p.paradeStartDate),
+            festivalStartDate: parseDate(p.festivalStartDate),
+            festivalEndDate: parseDate(p.festivalEndDate),
           },
         ];
       })

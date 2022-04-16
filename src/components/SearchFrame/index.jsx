@@ -12,7 +12,7 @@ export const SearchFrame = () => {
 
   const cityResults = new Fuse(prides, {
     includeMatches: true,
-    keys: ["city"],
+    keys: ["city", "name"],
     threshold: 0.5,
   }).search(searchTerm);
 
