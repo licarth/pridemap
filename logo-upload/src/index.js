@@ -25,7 +25,7 @@ const destFileName = (id) => `badges/instagram/${id}.png`;
       ids.push(p.instagram);
     }
   });
-  await throttledPromises(uploadLogo, ids, 5, 1000);
+  await throttledPromises(uploadLogo, ids, 10, 1000);
 })();
 
 async function uploadLogo(id) {
