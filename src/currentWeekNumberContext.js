@@ -16,7 +16,7 @@ import useGoogleSheets from "use-google-sheets";
 import { formatWeekend } from "./formatWeekend";
 import { parseDate } from "./parseDate";
 
-const formatWeekendUrl = flow(formatWeekend, (s) => s.replaceAll(" ", "_"));
+const formatWeekendUrl = flow(formatWeekend, (s) => _.replace(s, / /g, "_"));
 
 const weekendNumberPerName = _.keyBy(
   _.range(1, 53).map(Number),
