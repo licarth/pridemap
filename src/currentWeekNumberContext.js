@@ -68,7 +68,15 @@ export const PrideSelectContextProvider = ({ children }) => {
         const lat = Number(p.Latitude);
         const lng = Number(p.Longitude);
         const weekendNumber = Number(p.weekendNumber);
-        if (isNaN(lat) || isNaN(lng) | !weekendNumber) {
+        const shouldShowPride =
+          !isNaN(lat) &&
+          !isNaN(lng) &&
+          (isNotEmpty(p.instagram) ||
+            isNotEmpty(p.facebook) ||
+            isNotEmpty(p.twitter) ||
+            isNotEmpty(p.source));
+
+        if (!shouldShowPride) {
           return [];
         }
 
@@ -177,3 +185,5 @@ export const PrideSelectContextProvider = ({ children }) => {
 export const usePrideSelect = () => {
   return useContext(PrideSelectContext);
 };
+
+const isNotEmpty = (str) => str && str.trim().length > 0;
