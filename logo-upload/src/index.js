@@ -6,6 +6,7 @@ import { validateUrl } from "./validateUrl.js";
 import * as Either from "fp-ts/lib/Either.js";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { throttledPromises } from "./throttlePromise.js";
+import { listBucketFiles } from "./gcsListLogos.js";
 
 const bucketName = "gs://pridemap-eu-assets";
 const destFileName = (id) => `badges/instagram/${id}.png`;
@@ -25,7 +26,18 @@ const destFileName = (id) => `badges/instagram/${id}.png`;
       ids.push(p.instagram);
     }
   });
-  await throttledPromises(uploadLogo, ids, 10, 1000);
+
+  //Find already existing logos
+  const existingInstagramLogos = (
+    await listBucketFiles({ directory: "badges/instagram/", bucketName })
+  )
+    .map((p) => p.replace("badges/instagram/", ""))
+    .map((p) => p.replace(".png", ""));
+
+  const idsToUpload = ids.filter((id) => !existingInstagramLogos.includes(id));
+  console.log(idsToUpload);
+
+  await throttledPromises(uploadLogo, idsToUpload, 10, 1000);
 })();
 
 async function uploadLogo(id) {
