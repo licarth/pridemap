@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { BsCalendar3Week } from "react-icons/bs";
 import styled from "styled-components";
-import { BlackLink } from "./BlackLink";
+import { BlackLink, BlackLinkBox } from "./BlackLink";
 import { getFlagEmoji } from "./getFlagEmoji";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { prideName } from "./prideName";
@@ -45,6 +45,7 @@ export const SinglePrideIntro = ({ pride, resetSelection }) => {
 };
 
 const TopDescription = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -164,21 +165,21 @@ const logo = (logo) =>
 
 const StyledCloseButton = ({ resetSelection }) => {
   return (
-    <CloseButton
-      onClick={() => {
-        resetSelection();
-      }}
-    >
-      ╳
+    <CloseButton>
+      <BlackLinkBox
+        onClick={() => {
+          resetSelection();
+        }}
+      >
+        {"<"} Back to map
+      </BlackLinkBox>
     </CloseButton>
   );
 };
 
 const CloseButton = styled.span`
   position: absolute;
-  right: 0px;
-  margin-top: 10px;
-  margin-right: 20px;
-  font-size: large;
-  cursor: pointer;
+  left: 0px;
+  margin-top: 8px;
+  margin-left: 10px;
 `;
