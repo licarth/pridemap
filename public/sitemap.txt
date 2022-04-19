@@ -9,6 +9,8 @@ https://pridemap.eu/city/London
 https://pridemap.eu/city/Athens
 https://pridemap.eu/city/Budapest
 https://pridemap.eu/city/Dublin
+https://pridemap.eu/city/Reykjavik
+https://pridemap.eu/city/Roma
 https://pridemap.eu/city/Vaduz
 https://pridemap.eu/city/Vilnius
 https://pridemap.eu/city/Luxembourg
@@ -23,7 +25,7 @@ https://pridemap.eu/city/Paris
 https://pridemap.eu/city/Toulouse
 https://pridemap.eu/city/Frankfurt
 https://pridemap.eu/city/Munich
-https://pridemap.eu/city/Hanover
+https://pridemap.eu/city/Hannover
 https://pridemap.eu/city/Hamburg
 https://pridemap.eu/city/Stuttgart
 https://pridemap.eu/city/Bremen
@@ -53,6 +55,6 @@ https://pridemap.eu/city/Toledo
 https://pridemap.eu/city/Ibiza
 https://pridemap.eu/city/Maspalomas
 https://pridemap.eu/city/Livorno
-https://pridemap.eu/city/Venezia
-https://pridemap.eu/city/Roma
 https://pridemap.eu/city/Strasbourg
+https://pridemap.eu/city/Tel Aviv
+https://pridemap.eu/city/Saint-Denis
