@@ -140,7 +140,7 @@ const Map = () => {
       )}
       {
         <>
-          {
+          {weekendNumber && (
             <BottomContainer>
               <BottomCityListContainer>
                 {mode === "city" && (
@@ -195,7 +195,7 @@ const Map = () => {
                 </SliderContainer>
               )}
             </BottomContainer>
-          }
+          )}
         </>
       }
     </FlexBody>
