@@ -8,6 +8,12 @@ export const MetaDescription = () => {
 
   const DEFAULT_DESCRIPTION = "Find all details about prides in Europe in 2022";
 
+  const pageDescription = selectedPride
+    ? prideDescription(selectedPride)
+    : DEFAULT_DESCRIPTION;
+  const pageTitle = `${
+    selectedPride ? selectedPride.city + " Pride | " : ""
+  }Pride Map 2022`;
   return (
     <Helmet
       script={[
@@ -31,17 +37,12 @@ export const MetaDescription = () => {
       ]}
     >
       <meta charSet="utf-8" />
-      <title>
-        {`${
-          selectedPride ? selectedPride.city + " Pride | " : ""
-        }Pride Map 2022`}
-      </title>
-      <meta
-        name="description"
-        content={
-          selectedPride ? prideDescription(selectedPride) : DEFAULT_DESCRIPTION
-        }
-      />
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <meta name="twitter:card" content="summary" />
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:image" content="https://pridemap.eu/twitter-tag.png" />
     </Helmet>
   );
 };
