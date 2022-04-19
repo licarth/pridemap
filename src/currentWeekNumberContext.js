@@ -129,12 +129,15 @@ export const PrideSelectContextProvider = ({ children }) => {
     selectWeekend("");
   }, [selectWeekend]);
 
-  const minWeekendNumber = prides
-    ? Math.min(...prides.map((p) => p.weekendNumber))
+  const pridesWithDate =
+    prides?.length && prides.filter((p) => !!p.weekendNumber);
+
+  const minWeekendNumber = pridesWithDate
+    ? Math.min(...pridesWithDate.map((p) => p.weekendNumber))
     : null;
 
-  const maxWeekendNumber = prides
-    ? Math.max(...prides.map((p) => p.weekendNumber))
+  const maxWeekendNumber = pridesWithDate
+    ? Math.max(...pridesWithDate.map((p) => p.weekendNumber))
     : null;
 
   const nextWeekend = useCallback(() => {
