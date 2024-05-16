@@ -5,12 +5,12 @@ import { pipe } from "fp-ts/lib/function";
 export const formatWeekend = (weekendNumber) => {
   try {
     const firstDay = pipe(
-      new Date(2022, 0, 1),
+      new Date(2024, 0, 1),
       addWeeks(weekendNumber - 1),
       endOfWeek
     );
     const secondDay = pipe(
-      new Date(2022, 0, 1),
+      new Date(2024, 0, 1),
       addWeeks(weekendNumber - 1),
       endOfWeek(),
       addDays(1)

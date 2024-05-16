@@ -6,14 +6,14 @@ import { usePrideSelect } from "../currentWeekNumberContext";
 export const MetaDescription = () => {
   const { selectedPride } = usePrideSelect();
 
-  const DEFAULT_DESCRIPTION = "Find all details about prides in Europe in 2022";
+  const DEFAULT_DESCRIPTION = "Find all details about prides in Europe in 2024";
 
   const pageDescription = selectedPride
     ? prideDescription(selectedPride)
     : DEFAULT_DESCRIPTION;
   const pageTitle = `${
     selectedPride ? selectedPride.city + " Pride | " : ""
-  }Pride Map 2022`;
+  }Pride Map 2024`;
   return (
     <Helmet
       script={[
